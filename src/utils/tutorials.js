@@ -209,11 +209,11 @@ export function isTutorialNew (tutorial) {
 
 // returns string representing tutorial type
 export function getTutorialType (tutorialId) {
-  if (tutorials[tutorialId].lessons.some(lesson => lesson.type === 'file-upload')) {
+  if (tutorials[tutorialId].lessons?.some?.(lesson => lesson.type === 'file-upload')) {
     return 'file-upload'
-  } else if (tutorials[tutorialId].lessons.some(lesson => lesson.type === 'code')) {
+  } else if (tutorials[tutorialId].lessons?.some?.(lesson => lesson.type === 'code')) {
     return 'code'
-  } else if (tutorials[tutorialId].lessons.some(lesson => lesson.type === 'multiple-choice')) {
+  } else if (tutorials[tutorialId].lessons?.some?.(lesson => lesson.type === 'multiple-choice')) {
     return 'multiple-choice'
   } else {
     return 'text'
