@@ -50,6 +50,15 @@ import countly from '../utils/countly'
 
 export default {
   name: 'Tutorials',
+  setup: () => {
+    return {
+      Header,
+      Footer,
+      TutorialsGrid,
+      ToggleButton,
+      SelectInput
+    }
+  },
   components: {
     Header,
     Footer,

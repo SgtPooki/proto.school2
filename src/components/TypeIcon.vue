@@ -14,12 +14,20 @@ import ResourcesIcon from '../static/images/icons/resources.svg'
 
 export default {
   name: 'TypeIcon',
-  components: {
-    CodeIcon,
-    TextIcon,
-    MultipleChoiceIcon,
-    ResourcesIcon
+  setup: () => {
+    return {
+      CodeIcon,
+      TextIcon,
+      MultipleChoiceIcon,
+      ResourcesIcon
+    }
   },
+  // components: {
+  //   CodeIcon,
+  //   TextIcon,
+  //   MultipleChoiceIcon,
+  //   ResourcesIcon
+  // },
   props: {
     tutorialId: {
       type: String,

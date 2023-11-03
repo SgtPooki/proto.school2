@@ -2,6 +2,10 @@ import moment from 'moment'
 import { defineAsyncComponent } from 'vue'
 // import api from './api/index.js'
 import HomePage from './pages/Home.vue'
+import TutorialsPage from './pages/Tutorials.vue'
+import EventsPage from './pages/Events.vue'
+import NewsPage from './pages/News.vue'
+import HostPage from './pages/Host.vue'
 const lastmod = moment().format('YYYY-MM-DD')
 
 function addSitemapLoc (route) {
@@ -33,31 +37,31 @@ function statics () {
       displayName: 'Home',
       sitemap: { priority: 1, changefreq: 'weekly', lastmod }
     },
-    // {
-    //   path: '/tutorials/',
-    //   component: () => defineAsyncComponent(() => import('./pages/Tutorials.vue')),
-    //   name: 'Tutorials',
-    //   props: (route) => ({ code: route.query.code, course: route.query.course }),
-    //   sitemap: { priority: 0.9, changefreq: 'weekly', lastmod }
-    // },
-    // {
-    //   path: '/events/',
-    //   component: () => defineAsyncComponent(() => import('./pages/Events.vue')),
-    //   name: 'Events',
-    //   sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
-    // },
-    // {
-    //   path: '/news/',
-    //   component: () => defineAsyncComponent(() => import('./pages/News.vue')),
-    //   name: 'News',
-    //   sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
-    // },
-    // {
-    //   path: '/host/',
-    //   component: () => defineAsyncComponent(() => import('./pages/Host.vue')),
-    //   name: 'Host',
-    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    // },
+    {
+      path: '/tutorials/',
+      component: TutorialsPage,
+      name: 'Tutorials',
+      props: (route) => ({ code: route.query.code, course: route.query.course }),
+      sitemap: { priority: 0.9, changefreq: 'weekly', lastmod }
+    },
+    {
+      path: '/events/',
+      component: EventsPage,
+      name: 'Events',
+      sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
+    },
+    {
+      path: '/news/',
+      component: NewsPage,
+      name: 'News',
+      sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
+    },
+    {
+      path: '/host/',
+      component: HostPage,
+      name: 'Host',
+      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    },
     // {
     //   path: '/build/',
     //   component: () => defineAsyncComponent(() => import('./pages/Build.vue')),
