@@ -30,7 +30,7 @@ import { debugLog } from '../../utils/debug'
 import countly from '../../utils/countly'
 import translations from '../../static/translations'
 import Button from '../buttons/Button'
-import ButtonLink from '../buttons/ButtonLink'
+import ButtonLink from '../buttons/ButtonLink.vue'
 import BaseModal from './BaseModal'
 
 const debugGroup = '[modals/TutorialRedirectModal]'

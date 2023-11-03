@@ -1,7 +1,7 @@
-const log = require('../logger').default
-const debug = require('../debug')
-const tutorialsApi = require('./tutorials').default
-const utils = require('../utils').default
+import log from '../logger'
+import debug from '../debug'
+import tutorialsApi from './tutorials'
+import utils from '../utils'
 
 const logGroup = functionMethod => `[resources.${functionMethod}()]`
 
@@ -21,7 +21,7 @@ function get (id) {
   return tutorial.resources
 }
 
-module.exports = {
+export default {
   add,
   get
 }

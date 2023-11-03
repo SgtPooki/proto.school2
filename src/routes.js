@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { defineAsyncComponent } from 'vue'
-import api from './api/index.js'
-
+// import api from './api/index.js'
+import HomePage from './pages/Home.vue'
 const lastmod = moment().format('YYYY-MM-DD')
 
 function addSitemapLoc (route) {
@@ -28,47 +28,48 @@ function statics () {
   return [
     {
       path: '/',
-      component: () => defineAsyncComponent(() => import('./pages/Home.vue')),
+      component: HomePage,
       name: 'Home',
+      displayName: 'Home',
       sitemap: { priority: 1, changefreq: 'weekly', lastmod }
     },
-    {
-      path: '/tutorials/',
-      component: () => defineAsyncComponent(() => import('./pages/Tutorials.vue')),
-      name: 'Tutorials',
-      props: (route) => ({ code: route.query.code, course: route.query.course }),
-      sitemap: { priority: 0.9, changefreq: 'weekly', lastmod }
-    },
-    {
-      path: '/events/',
-      component: () => defineAsyncComponent(() => import('./pages/Events.vue')),
-      name: 'Events',
-      sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
-    },
-    {
-      path: '/news/',
-      component: () => defineAsyncComponent(() => import('./pages/News.vue')),
-      name: 'News',
-      sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
-    },
-    {
-      path: '/host/',
-      component: () => defineAsyncComponent(() => import('./pages/Host.vue')),
-      name: 'Host',
-      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    },
-    {
-      path: '/build/',
-      component: () => defineAsyncComponent(() => import('./pages/Build.vue')),
-      name: 'Build',
-      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    },
-    {
-      path: '/contribute/',
-      component: () => defineAsyncComponent(() => import('./pages/Contribute.vue')),
-      name: 'Contribute',
-      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    }
+    // {
+    //   path: '/tutorials/',
+    //   component: () => defineAsyncComponent(() => import('./pages/Tutorials.vue')),
+    //   name: 'Tutorials',
+    //   props: (route) => ({ code: route.query.code, course: route.query.course }),
+    //   sitemap: { priority: 0.9, changefreq: 'weekly', lastmod }
+    // },
+    // {
+    //   path: '/events/',
+    //   component: () => defineAsyncComponent(() => import('./pages/Events.vue')),
+    //   name: 'Events',
+    //   sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
+    // },
+    // {
+    //   path: '/news/',
+    //   component: () => defineAsyncComponent(() => import('./pages/News.vue')),
+    //   name: 'News',
+    //   sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
+    // },
+    // {
+    //   path: '/host/',
+    //   component: () => defineAsyncComponent(() => import('./pages/Host.vue')),
+    //   name: 'Host',
+    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    // },
+    // {
+    //   path: '/build/',
+    //   component: () => defineAsyncComponent(() => import('./pages/Build.vue')),
+    //   name: 'Build',
+    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    // },
+    // {
+    //   path: '/contribute/',
+    //   component: () => defineAsyncComponent(() => import('./pages/Contribute.vue')),
+    //   name: 'Contribute',
+    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    // }
   ].map(route => ({ ...route, type: TYPES.STATIC })).map(addSitemapLoc)
 }
 
@@ -77,7 +78,6 @@ function statics () {
 function redirects () {
   // TODO Use API to get the tutorials (needs API to be universal)
   // https://github.com/ProtoSchool/protoschool.github.io/issues/589
-  // const api = require('./api')
 
   // const tutorialRedirects = Object.values(api.tutorials.list()).reduce((redirects, tutorial) => {
   //   if (tutorial.redirectUrls && tutorial.redirectUrls.length) {
@@ -127,24 +127,24 @@ function errors () {
   `redirectUrls` property will also be read to generate equivalent redirect routes
 */
 function tutorials () {
+  return []
+  // return Object.values(api.tutorials.list.get()).reduce((routes, tutorial) => {
+  //   routes.push({
+  //     type: TYPES.TUTORIAL,
+  //     path: `/${tutorial.url}/`,
+  //     sitemap: { priority: 1, changefreq: 'monthly', lastmod }
+  //   })
+  //   routes.push({
+  //     type: TYPES.RESOURCES,
+  //     path: `/${tutorial.url}/resources/`
+  //   })
 
-  return Object.values(api.tutorials.list.get()).reduce((routes, tutorial) => {
-    routes.push({
-      type: TYPES.TUTORIAL,
-      path: `/${tutorial.url}/`,
-      sitemap: { priority: 1, changefreq: 'monthly', lastmod }
-    })
-    routes.push({
-      type: TYPES.RESOURCES,
-      path: `/${tutorial.url}/resources/`
-    })
-
-    return routes.concat(tutorial.lessons.map(lesson => ({
-      type: TYPES.LESSON,
-      path: `/${lesson.url}/`,
-      sitemap: { priority: 1, changefreq: 'monthly', lastmod }
-    })))
-  }, []).map(addSitemapLoc)
+  //   return routes.concat(tutorial.lessons.map(lesson => ({
+  //     type: TYPES.LESSON,
+  //     path: `/${lesson.url}/`,
+  //     sitemap: { priority: 1, changefreq: 'monthly', lastmod }
+  //   })))
+  // }, []).map(addSitemapLoc)
 }
 
 /* Course routes. These are used to prerender and to be added to the sitemap
@@ -154,15 +154,15 @@ function tutorials () {
 
 */
 function courses () {
-  const api = require('./api')
+  return []
 
-  return api.courses.getCourseNames().map(course => {
-    return {
-      type: TYPES.COURSE,
-      path: `/course/${course}/`,
-      sitemap: { priority: 1, changefreq: 'monthly', lastmod }
-    }
-  }).map(addSitemapLoc)
+  // return api.courses.getCourseNames().map(course => {
+  //   return {
+  //     type: TYPES.COURSE,
+  //     path: `/course/${course}/`,
+  //     sitemap: { priority: 1, changefreq: 'monthly', lastmod }
+  //   }
+  // }).map(addSitemapLoc)
 }
 
 function all () {
@@ -175,7 +175,7 @@ function all () {
   ]
 }
 
-module.exports = {
+export default {
   statics,
   tutorials,
   courses,

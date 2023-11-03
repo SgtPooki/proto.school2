@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, copyFileSync } from 'fs'
+// import { readFileSync, writeFileSync, copyFileSync } from 'fs'
 
 import errorCode from 'err-code'
 import marked from 'meta-marked'
@@ -33,7 +33,8 @@ export function get (tutorial, lessonId) {
   debug && log.debug(logGroup('get'), tutorial.id, lessonId, formattedId)
 
   try {
-    lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
+    // lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
+    lessonMd = 'placeHolder for lessonMd'
     lesson = {
       id: lessonId,
       formattedId: formattedId,
@@ -93,7 +94,8 @@ export default {
   choices
 }
 `
-  writeFileSync(files.getJsPath(tutorial, lessonId), newFileContent)
+  // writeFileSync(files.getJsPath(tutorial, lessonId), newFileContent)
+  console.log('not writing file', files.getJsPath(tutorial, lessonId), newFileContent)
   return get(tutorial, lessonId)
 }
 
@@ -105,7 +107,8 @@ export default {
 */
 
 function isQuizPristine (tutorial, lesson) {
-  let quizContent = readFileSync(files.getJsPath(tutorial, lesson.formattedId), 'utf8')
+  // let quizContent = readFileSync(files.getJsPath(tutorial, lesson.formattedId), 'utf8')
+  let quizContent = 'placeHolder for quizContent'
   return quizContent.includes('#PRISTINE#')
 }
 
@@ -126,20 +129,24 @@ function isQuizPristine (tutorial, lesson) {
 function create (tutorial, data) {
   const lessonId = getNextLessonId(tutorial)
 
-  let lessonMarkdown = readFileSync(boilerplates.markdownPath, 'utf8')
+  // let lessonMarkdown = readFileSync(boilerplates.markdownPath, 'utf8')
+  let lessonMarkdown = 'placeHolder for lessonMarkdown'
 
   lessonMarkdown = lessonMarkdown.replace(`title: "Lesson title"`, `title: "${data.title}"`)
   lessonMarkdown = lessonMarkdown.replace(`type: "text"`, `type: "${data.type || 'text'}"`)
 
   if (data.type !== 'text') {
-    copyFileSync(`${boilerplates.path}/boilerplate-${data.type}.js`, files.getJsPath(tutorial, lessonId))
+    // copyFileSync(`${boilerplates.path}/boilerplate-${data.type}.js`, files.getJsPath(tutorial, lessonId))
+    console.log('not copying file', boilerplates.path, files.getJsPath(tutorial, lessonId))
 
     if (data.type !== 'multiple-choice') {
-      copyFileSync(boilerplates.challengeMarkdownPath, files.getChallengeMarkdownPath(tutorial, lessonId))
+      // copyFileSync(boilerplates.challengeMarkdownPath, files.getChallengeMarkdownPath(tutorial, lessonId))
+      console.log('not copying file', boilerplates.challengeMarkdownPath, files.getChallengeMarkdownPath(tutorial, lessonId))
     }
   }
 
-  writeFileSync(files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
+  // writeFileSync(files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
+  console.log('not writing file', files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
 
   return get(tutorial, lessonId)
 }

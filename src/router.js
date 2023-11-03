@@ -10,7 +10,7 @@ import { defineAsyncComponent } from 'vue'
 // Migrate cache using configured redirects
 migrateCache()
 
-const router = new createRouter({
+export const router = new createRouter({
   routes: [
     ...routes.statics(),
     ...routes.errors(),
@@ -38,10 +38,10 @@ const router = new createRouter({
       props: true
     },
     // 404
-    {
-      path: '*',
-      redirect: '404'
-    }
+    // {
+    //   path: '*',
+    //   redirect: '404'
+    // }
   ],
   history: createWebHistory(),
   scrollBehavior (to, from, savedPosition) {

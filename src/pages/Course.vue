@@ -73,10 +73,10 @@ import countly from '../utils/countly'
 
 import Header from '../components/layout/Header.vue'
 import Footer from '../components/layout/Footer.vue'
-import TutorialsGrid from '../components/TutorialsGrid'
-import ToggleButton from '../components/ToggleButton'
-import ButtonLink from '../components/buttons/ButtonLink'
-import ProjectIcon from '../components/icons/ProjectIcon'
+import TutorialsGrid from '../components/TutorialsGrid.vue'
+import ToggleButton from '../components/ToggleButton.vue'
+import ButtonLink from '../components/buttons/ButtonLink.vue'
+import ProjectIcon from '../components/icons/ProjectIcon.vue'
 
 export default {
   name: 'Tutorials',

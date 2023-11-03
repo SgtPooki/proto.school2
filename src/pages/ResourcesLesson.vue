@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import head from '../utils/head'
-import { getTutorialByUrl } from '../utils/tutorials'
-import Lesson from '../components/Lesson'
+import head from '../utils/head/index.js'
+import { getTutorialByUrl } from '../utils/tutorials.js'
+import Lesson from '../components/Lesson.vue'
 
 export default {
   components: {

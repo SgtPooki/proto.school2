@@ -47,11 +47,11 @@
   </transition>
 </template>
 <script>
-import AnswerOneIcon from '../../../static/images/icons/survey/1.svg?inline'
-import AnswerTwoIcon from '../../../static/images/icons/survey/2.svg?inline'
-import AnswerThreeIcon from '../../../static/images/icons/survey/3.svg?inline'
-import AnswerFourIcon from '../../../static/images/icons/survey/4.svg?inline'
-import AnswerFiveIcon from '../../../static/images/icons/survey/5.svg?inline'
+import AnswerOneIcon from '../../../static/images/icons/survey/1.svg'
+import AnswerTwoIcon from '../../../static/images/icons/survey/2.svg'
+import AnswerThreeIcon from '../../../static/images/icons/survey/3.svg'
+import AnswerFourIcon from '../../../static/images/icons/survey/4.svg'
+import AnswerFiveIcon from '../../../static/images/icons/survey/5.svg'
 import translations from '../../../static/translations'
 
 export default {

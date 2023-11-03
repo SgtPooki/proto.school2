@@ -1,12 +1,13 @@
 import moment from 'moment'
+import { defineAsyncComponent } from 'vue'
 
 import marked from './marked'
 import projects from './projects'
 import { DOMAIN } from '../config'
-
+import tutorialsJson from '../static/tutorials.json'
 // Load data from the window variable
 // This supports data overriding and custom SSR
-const tutorialsJson = require('../static/tutorials.json')
+// const tutorialsJson = require('../static/tutorials.json')
 const tutorials = (window.__DATA__ && window.__DATA__.tutorials) || tutorialsJson
 
 // SET CASING OVERRIDES HERE
@@ -39,7 +40,7 @@ for (const tutorialId in tutorials) {
   tutorials[tutorialId].formattedId = tutorialId
   tutorials[tutorialId].id = parseInt(tutorialId, 10)
   tutorials[tutorialId].shortTitle = deriveShortname(tutorials[tutorialId].url)
-  tutorials[tutorialId].lessons = getTutorialLessons(tutorials[tutorialId])
+  tutorials[tutorialId].lessons = defineAsyncComponent(() => getTutorialLessons(tutorials[tutorialId]))
   tutorials[tutorialId].project = projects.get(tutorials[tutorialId].project)
   tutorials[tutorialId].newMessage = tutorials[tutorialId].newMessage
     ? marked(tutorials[tutorialId].newMessage).html.replace('<p>', '').replace('</p>', '')
@@ -51,7 +52,7 @@ for (const tutorialId in tutorials) {
 
 // TODO Move this to a build script in the future to avoid heavy processing on the client.
 // This will only become a problem when the number of tutorials and lessons increases
-export function getTutorialLessons (tutorial, lessons = [], lessonNumber = 1) {
+export async function getTutorialLessons (tutorial, lessons = [], lessonNumber = 1) {
   const formattedId = lessonNumber.toString().padStart(2, 0)
   const lessonFilePrefix = `${tutorial.formattedId}-${tutorial.url}/${formattedId}`
 
@@ -59,7 +60,9 @@ export function getTutorialLessons (tutorial, lessons = [], lessonNumber = 1) {
   let lesson
 
   try {
-    lessonMd = marked(require(`../tutorials/${lessonFilePrefix}.md`))
+    const lessonMdRaw = await import(`../tutorials/${lessonFilePrefix}.md`)
+    console.log(`lessonMdRaw: `, lessonMdRaw);
+    lessonMd = marked(lessonMdRaw)
 
     lesson = {
       id: lessonNumber,
@@ -85,7 +88,9 @@ export function getTutorialLessons (tutorial, lessons = [], lessonNumber = 1) {
 
   if (lesson.type !== 'text') {
     try {
-      lesson.logic = require(`../tutorials/${lessonFilePrefix}.js`).default
+      const { default: lessonJs } = await import(`../tutorials/${lessonFilePrefix}.js`)
+      // lesson.logic = require(`../tutorials/${lessonFilePrefix}.js`).default
+      lesson.logic = lessonJs
     } catch (error) {
       if (error.code === 'MODULE_NOT_FOUND') {
         console.error(
@@ -186,7 +191,7 @@ export function hasTutorialBeenUpdatedRecently (tutorial) {
     new Date(tutorialPassedAt) < updatedAtDate
   )
 
-  const someLessonPassedBeforeUpdate = tutorial.lessons.some(lesson => {
+  const someLessonPassedBeforeUpdate = tutorial.lessons?.some?.(lesson => {
     const lessonPassedAt = localStorage[`passed/${tutorial.url}/${lesson.formattedId}`]
 
     return lessonPassedAt && (

@@ -1,8 +1,12 @@
 import data from '../static/projects.json'
+import { defineAsyncComponent } from 'vue'
+// import projectLogos from '../static/images/projects/*.svg'
 
 // Populate data with more properties
+
 data.forEach(project => {
-  project.logo = require(`../static/images/projects/${project.id}.svg`)
+  // project.logo = require(`../static/images/projects/${project.id}.svg`)
+  project.logo = defineAsyncComponent(() => import(`../static/images/projects/${project.id}.svg`))
 })
 
 export function get (id) {
@@ -14,7 +18,7 @@ export function getAll () {
 }
 
 export function getNewsletters () {
-  return getAll().filter(project => project.hasOwnProperty('newsletterUrl'))
+  return getAll().filter(project => Object.prototype.hasOwnProperty.call(project, 'newsletterUrl'))
 }
 
 export default {

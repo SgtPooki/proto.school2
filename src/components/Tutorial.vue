@@ -37,14 +37,14 @@
       <TutorialMessage :tutorial="tutorial" class="mb4" />
       <ul class="lessons-list mv2 pa0 f5 br3">
         <template v-for="(lesson, index) in tutorial.lessons">
-          <li :key="index">
+          <li>
             <LessonLink
               data-cy="lesson-link-standard"
               :to="`/${tutorial.url}/${(index + 1).toString().padStart(2, 0)}`"
               :lesson="lesson"
               :lessonNumber="index + 1"
               :lessonId="(index + 1).toString().padStart(2, 0)"
-              :tutorialId="tutorialId"/>
+              :tutorialId="tutorialId" />
           </li>
         </template>
         <LessonLink data-cy="lesson-link-resources" v-if="tutorial.resources" :to="resourcesLink" :lesson="resourcesLesson" :tutorialId="tutorialId"/>
@@ -82,8 +82,8 @@ export default {
   },
   data: self => {
     return {
-      resourcesLesson,
-      isTutorialPassed
+      // resourcesLesson,
+      // isTutorialPassed
     }
   },
   computed: {

@@ -1,4 +1,4 @@
-const coursesJson = require('../static/courses.json')
+import coursesJson from '../static/courses.json'
 const courses = (window.__DATA__ && window.__DATA__.courses) || coursesJson
 
 // returns unsorted array of course ids (eg. [ipfs, multiformats, filecoin])

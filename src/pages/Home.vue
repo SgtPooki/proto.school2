@@ -81,21 +81,51 @@
 </template>
 
 <script>
-import head from '../utils/head'
+import head from '../utils/head/index.js'
 import Header from '../components/layout/Header.vue'
 import Footer from '../components/layout/Footer.vue'
-import EventCard from '../components/cards/EventCard'
-import ButtonLink from '../components/buttons/ButtonLink'
-import TutorialsGrid from '../components/TutorialsGrid'
-import ProjectIcon from '../components/icons/ProjectIcon'
+import EventCard from '../components/cards/EventCard.vue'
+import ButtonLink from '../components/buttons/ButtonLink.vue'
+import TutorialsGrid from '../components/TutorialsGrid.vue'
+import ProjectIcon from '../components/icons/ProjectIcon.vue'
 import coursesList from '../static/courses.json'
-import tutorials from '../utils/tutorials'
-import { futureEvents } from '../utils/events'
-import { getAll } from '../utils/projects'
-import { getCourseNames, getTutorialCount } from '../utils/courses'
+import tutorials from '../utils/tutorials.js'
+import { futureEvents } from '../utils/events.js'
+import { getAll } from '../utils/projects.js'
+import { getCourseNames, getTutorialCount } from '../utils/courses.js'
+
+// const asyncComponent = async () => {
+//   return {
+//     name: 'Home',
+//     displayName: 'Home',
+//     components: {
+//       Header,
+//       Footer,
+//       TutorialsGrid,
+//       EventCard,
+//       ButtonLink,
+//       ProjectIcon
+//     },
+//     data: self => {
+//       return {
+//         futureEvents,
+//         getTutorialCount
+//       }
+//     },
+//     computed: {
+//       featuredTutorials: () => coursesList.featured.map(tutorialId => ({ ...tutorials[tutorialId], tutorialId })),
+//       courses: () => getAll().filter(course => getCourseNames().includes(course.id)).sort((a, b) => getTutorialCount(b.id) - getTutorialCount(a.id))
+//     },
+//     head () {
+//       return head()
+//     }
+//   }
+// }
+// export default asyncComponent
 
 export default {
   name: 'Home',
+  displayName: 'Home',
   components: {
     Header,
     Footer,

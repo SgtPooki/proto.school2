@@ -55,8 +55,8 @@ import head from '../utils/head'
 import { pastEvents, futureEvents } from '../utils/events'
 import Header from '../components/layout/Header.vue'
 import Footer from '../components/layout/Footer.vue'
-import EventCard from '../components/cards/EventCard'
-import ButtonLink from '../components/buttons/ButtonLink'
+import EventCard from '../components/cards/EventCard.vue'
+import ButtonLink from '../components/buttons/ButtonLink.vue'
 
 export default {
   name: 'events',

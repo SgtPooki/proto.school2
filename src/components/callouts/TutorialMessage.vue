@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import InfoIcon from '../../static/images/icons/info.svg?inline'
+import InfoIcon from '../../static/images/icons/info.svg'
 import { state as tutorialState } from '../../utils/tutorials'
 
 export default {

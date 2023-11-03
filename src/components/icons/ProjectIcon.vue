@@ -1,3 +1,6 @@
+<!-- <script setup>
+
+</script> -->
 <template>
   <DWebIcon v-if="id === 'dweb'"/>
   <FilecoinIcon v-else-if="id === 'filecoin'"/>
@@ -8,27 +11,39 @@
 </template>
 
 <script>
-import DWebIcon from '../../static/images/projects/dweb.svg?inline'
-import FilecoinIcon from '../../static/images/projects/filecoin.svg?inline'
-import IPFSIcon from '../../static/images/projects/ipfs.svg?inline'
-import IPLDIcon from '../../static/images/projects/ipld.svg?inline'
-import Libp2pIcon from '../../static/images/projects/libp2p.svg?inline'
-import MultiformatsIcon from '../../static/images/projects/multiformats.svg?inline'
+import DWebIcon from '@/static/images/projects/dweb.svg'
+import FilecoinIcon from '@/static/images/projects/filecoin.svg'
+import IPFSIcon from '@/static/images/projects/ipfs.svg'
+import IPLDIcon from '@/static/images/projects/ipld.svg'
+import Libp2pIcon from '@/static/images/projects/libp2p.svg'
+import MultiformatsIcon from '@/static/images/projects/multiformats.svg'
 
 export default {
+  setup () {
+    return {
+      DWebIcon,
+      FilecoinIcon,
+      IPFSIcon,
+      IPLDIcon,
+      Libp2pIcon,
+      MultiformatsIcon
+    }
+  },
   name: 'ProjectIcon',
   components: {
-    DWebIcon,
-    FilecoinIcon,
-    IPFSIcon,
-    IPLDIcon,
-    Libp2pIcon,
-    MultiformatsIcon
+    // {
+
+    // }
+    // DWebIcon,
+    // FilecoinIcon,
+    // IPFSIcon,
+    // IPLDIcon,
+    // Libp2pIcon,
+    // MultiformatsIcon
   },
   props: {
     id: String,
     alt: String
   }
 }
-
 </script>

@@ -7,10 +7,10 @@
 
 <script>
 import { getTutorialType, getLessonType } from '../utils/tutorials'
-import CodeIcon from '../static/images/icons/code.svg?inline'
-import TextIcon from '../static/images/icons/text.svg?inline'
-import MultipleChoiceIcon from '../static/images/icons/multiple-choice.svg?inline'
-import ResourcesIcon from '../static/images/icons/resources.svg?inline'
+import CodeIcon from '../static/images/icons/code.svg'
+import TextIcon from '../static/images/icons/text.svg'
+import MultipleChoiceIcon from '../static/images/icons/multiple-choice.svg'
+import ResourcesIcon from '../static/images/icons/resources.svg'
 
 export default {
   name: 'TypeIcon',

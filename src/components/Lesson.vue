@@ -127,7 +127,7 @@
 
 <script>
 import Vue from 'vue'
-import CID from 'cids'
+import {CID} from 'multiformats/cid'
 import pTimeout from 'p-timeout'
 import all from 'it-all'
 import toBuffer from 'it-to-buffer'

@@ -29,9 +29,9 @@
   </Card>
 </template>
 <script>
-import Card from './SimpleCard'
-import ProjectIcon from '../icons/ProjectIcon'
-import TypeIcon from '../TypeIcon'
+import Card from './SimpleCard.vue'
+import ProjectIcon from '../icons/ProjectIcon.vue'
+import TypeIcon from '../TypeIcon.vue'
 import { state as tutorialState } from '../../utils/tutorials'
 
 export default {

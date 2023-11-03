@@ -28,11 +28,11 @@
 
 <script>
 import head from '../utils/head'
-import ProjectIcon from '../components/icons/ProjectIcon'
+import ProjectIcon from '../components/icons/ProjectIcon.vue'
 import Header from '../components/layout/Header.vue'
 import Footer from '../components/layout/Footer.vue'
 import NewsletterSubscription from '../components/forms/NewsletterSubscription.vue'
-import { getNewsletters } from '../utils/projects'
+import { getNewsletters } from '../utils/projects.js'
 import countly from '../utils/countly'
 
 export default {

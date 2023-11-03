@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import CompleteIcon from '../static/images/complete.svg?inline'
-import InProgressIcon from '../static/images/in-progress.svg?inline'
-import NotStartedIcon from '../static/images/not-started.svg?inline'
+import CompleteIcon from '../static/images/complete.svg'
+import InProgressIcon from '../static/images/in-progress.svg'
+import NotStartedIcon from '../static/images/not-started.svg'
 
 export default {
   components: {

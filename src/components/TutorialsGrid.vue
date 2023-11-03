@@ -1,12 +1,12 @@
 <template>
   <div class="tutorials-grid flex flex-wrap justify-between">
     <template v-for="tutorial in tutorials">
-      <TutorialCard class="tutorial" :tutorial="tutorial" :key="tutorial.id" />
+      <TutorialCard class="tutorial" :tutorial="tutorial" />
     </template>
   </div>
 </template>
 <script>
-import TutorialCard from './cards/TutorialCard'
+import TutorialCard from './cards/TutorialCard.vue'
 
 export default {
   name: 'TutorialsGrid',

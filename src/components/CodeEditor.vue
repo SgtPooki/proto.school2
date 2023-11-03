@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import CompleteIcon from '../static/images/complete.svg?inline'
+import CompleteIcon from '../static/images/complete.svg'
 
 import countly from '../utils/countly'
 import MonacoEditor from 'monaco-editor-vue'

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CloseIcon from '../../static/images/close.svg?inline'
+import CloseIcon from '../../static/images/close.svg'
 
 export default {
   components: {

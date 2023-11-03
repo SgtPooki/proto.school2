@@ -48,7 +48,7 @@
 import moment from 'moment'
 
 import tutorialsData from '../../utils/tutorials'
-import ButtonLink from '../buttons/ButtonLink'
+import ButtonLink from '../buttons/ButtonLink.vue'
 import Card from './SimpleCard.vue'
 
 export default {

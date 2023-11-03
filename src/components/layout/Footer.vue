@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import ProtoSchoolLogo from '../../static/images/ps_symbol_color.svg?inline'
+// import ProtoSchoolLogo from '../../static/images/ps_symbol_color.svg'
 import translations from '../../static/translations'
 import projects from '../../static/projects.json'
 
 export default {
   name: 'Footer',
   components: {
-    ProtoSchoolLogo
+    // ProtoSchoolLogo
   },
   props: {
     noTopMargin: Boolean

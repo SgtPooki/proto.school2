@@ -74,8 +74,10 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+// import { validationMixin } from 'vuelidate'
+import { useVuelidate } from '@vuelidate/core'
+
+import { required, minLength } from '@vuelidate/validators'
 import qs from 'querystringify'
 
 import config from '../../config'
@@ -96,7 +98,7 @@ const BOT_INPUT_MITIGATION_NAME = 'b_41e9e493c56c3865870435d91_967f7cf514'
 
 export default {
   name: 'NewsletterSubscription',
-  mixins: [validationMixin],
+  mixins: [useVuelidate],
   components: {
     Button,
     TextInput,

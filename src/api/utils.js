@@ -1,5 +1,5 @@
-import { writeFileSync } from 'fs'
-import { resolve } from 'path'
+// import { writeFileSync } from 'fs'
+// import { resolve } from 'path'
 
 import { staticPath } from './config'
 
@@ -10,8 +10,9 @@ const correctedCases = {
   a: 'a'
 }
 
-function writeStaticFile (staticFileName, data) {
-  writeFileSync(resolve(staticPath, staticFileName), JSON.stringify(data, null, 2))
+export function writeStaticFile (staticFileName, data) {
+  console.log('not writing static file', staticFileName, data)
+  // writeFileSync(resolve(staticPath, staticFileName), JSON.stringify(data, null, 2))
 }
 
 export function deriveShortname (path) {

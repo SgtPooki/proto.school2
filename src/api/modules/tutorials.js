@@ -9,7 +9,7 @@ import { resolve } from 'path'
 
 import errorCode from 'err-code'
 import { findKey } from 'lodash'
-import { sync } from 'del'
+import { deleteSync as sync } from 'del'
 
 import { createLogGroup, debug as _debug } from '../logger'
 import debug from '../debug'
@@ -26,7 +26,7 @@ function getNextTutorialId () {
   return list.getLatest().id + 1
 }
 
-function getFormattedId (id) {
+export function getFormattedId (id) {
   return id.toString().padStart(4, 0)
 }
 
