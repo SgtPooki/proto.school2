@@ -6,6 +6,9 @@ import TutorialsPage from './pages/Tutorials.vue'
 import EventsPage from './pages/Events.vue'
 import NewsPage from './pages/News.vue'
 import HostPage from './pages/Host.vue'
+import BuildPage from './pages/Build.vue'
+import ContributePage from './pages/Contribute.vue'
+
 const lastmod = moment().format('YYYY-MM-DD')
 
 function addSitemapLoc (route) {
@@ -62,18 +65,18 @@ function statics () {
       name: 'Host',
       sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
     },
-    // {
-    //   path: '/build/',
-    //   component: () => defineAsyncComponent(() => import('./pages/Build.vue')),
-    //   name: 'Build',
-    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    // },
-    // {
-    //   path: '/contribute/',
-    //   component: () => defineAsyncComponent(() => import('./pages/Contribute.vue')),
-    //   name: 'Contribute',
-    //   sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
-    // }
+    {
+      path: '/build/',
+      component: BuildPage,
+      name: 'Build',
+      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    },
+    {
+      path: '/contribute/',
+      component: ContributePage,
+      name: 'Contribute',
+      sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
+    }
   ].map(route => ({ ...route, type: TYPES.STATIC })).map(addSitemapLoc)
 }
 
