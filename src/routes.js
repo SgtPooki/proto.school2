@@ -1,4 +1,5 @@
-const moment = require('moment')
+import moment from 'moment'
+import { defineAsyncComponent } from 'vue'
 
 const lastmod = moment().format('YYYY-MM-DD')
 
@@ -26,44 +27,44 @@ function statics () {
   return [
     {
       path: '/',
-      component: () => import(/* webpackChunkName: "home" */ './pages/Home'),
+      component: () => defineAsyncComponent(() => import('./pages/Home.vue')),
       name: 'Home',
       sitemap: { priority: 1, changefreq: 'weekly', lastmod }
     },
     {
       path: '/tutorials/',
-      component: () => import(/* webpackChunkName: "tutorials" */ './pages/Tutorials'),
+      component: () => defineAsyncComponent(() => import('./pages/Tutorials.vue')),
       name: 'Tutorials',
       props: (route) => ({ code: route.query.code, course: route.query.course }),
       sitemap: { priority: 0.9, changefreq: 'weekly', lastmod }
     },
     {
       path: '/events/',
-      component: () => import(/* webpackChunkName: "events" */ './pages/Events'),
+      component: () => defineAsyncComponent(() => import('./pages/Events.vue')),
       name: 'Events',
       sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
     },
     {
       path: '/news/',
-      component: () => import(/* webpackChunkName: "news" */ './pages/News'),
+      component: () => defineAsyncComponent(() => import('./pages/News.vue')),
       name: 'News',
       sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
     },
     {
       path: '/host/',
-      component: () => import(/* webpackChunkName: "host" */ './pages/Host'),
+      component: () => defineAsyncComponent(() => import('./pages/Host.vue')),
       name: 'Host',
       sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
     },
     {
       path: '/build/',
-      component: () => import(/* webpackChunkName: "build" */ './pages/Build'),
+      component: () => defineAsyncComponent(() => import('./pages/Build.vue')),
       name: 'Build',
       sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
     },
     {
       path: '/contribute/',
-      component: () => import(/* webpackChunkName: "contribute" */ './pages/Contribute'),
+      component: () => defineAsyncComponent(() => import('./pages/Contribute.vue')),
       name: 'Contribute',
       sitemap: { priority: 0.6, changefreq: 'monthly', lastmod }
     }
@@ -111,7 +112,7 @@ function errors () {
     {
       path: '/404/',
       name: '404',
-      component: () => import(/* webpackChunkName: "error" */ './pages/NotFound')
+      component: () => defineAsyncComponent(() => import('./pages/NotFound.vue'))
     }
   ].map(route => ({ ...route, type: TYPES.ERROR })).map(addSitemapLoc)
 }
