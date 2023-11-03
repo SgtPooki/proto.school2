@@ -126,7 +126,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
+// TODO: vue3 migration for Vue.set
+// import Vue from 'vue'
 import {CID} from 'multiformats/cid'
 import pTimeout from 'p-timeout'
 import all from 'it-all'
@@ -317,7 +318,10 @@ export default {
   beforeCreate: function () {
     this.output = {}
     this.defaultCode = defaultCode
-    this.IPFSPromise = import('ipfs').then(m => m.default)
+    this.IPFSPromise = import('ipfs').then(m => {
+      console.log(m)
+      return m.default ?? m
+    })
   },
   beforeMount: function () {
     this.choice = localStorage[this.cacheKey] || ''
@@ -389,7 +393,8 @@ export default {
       // Output external errors or not depending on flag
       const result = await _eval(code, ipfs, args)
       if (!this.overrideErrors && result instanceof Error) {
-        Vue.set(output, 'test', result)
+        // TODO: vue3 migration for Vue.set
+        // Vue.set(output, 'test', result)
         this.lessonPassed = !!localStorage[this.lessonKey]
         this.isSubmitting = false
         this.clearPassed()
@@ -430,10 +435,13 @@ export default {
         }
       }
 
-      Vue.set(output, 'test', test)
+      // TODO: vue3 migration for Vue.set
+      // Vue.set(output, 'test', test)
+
       if (CID.isCID(result)) {
         oldIPFS = ipfs
-        Vue.set(output.test, 'cid', result)
+        // TODO: vue3 migration for Vue.set
+        // Vue.set(output.test, 'cid', result)
       } else {
         ipfs.stop()
       }
@@ -571,7 +579,9 @@ export default {
       localStorage[this.cacheKey] = result.selected
       this.choice = localStorage[this.cacheKey]
       this.cachedChoice = !!localStorage[this.cacheKey]
-      Vue.set(this.output, 'test', result)
+
+      // TODO: vue3 migration for Vue.set
+      // Vue.set(this.output, 'test', result)
       if (this.output.test.success) {
         setLessonPassed(this.tutorial, this.lesson)
         this.lessonPassed = !!localStorage[this.lessonKey]
@@ -589,7 +599,9 @@ export default {
     },
     next: function () {
       if (this.challenge) {
-        Vue.set(this.output, 'test', null)
+
+        // TODO: vue3 migration for Vue.set
+        // Vue.set(this.output, 'test', null)
       } else {
         setLessonPassed(this.tutorial, this.lesson)
         // track passed lesson if text only

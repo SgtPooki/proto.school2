@@ -24,14 +24,14 @@
 </template>
 
 <script>
-import { tutorialRedirectModal } from '../../config'
-import { isLessonPassed, getTutorialType } from '../../utils/tutorials'
-import { debugLog } from '../../utils/debug'
-import countly from '../../utils/countly'
-import translations from '../../static/translations'
-import Button from '../buttons/Button'
-import ButtonLink from '../buttons/ButtonLink.vue'
-import BaseModal from './BaseModal'
+import { tutorialRedirectModal } from '@/config'
+import { isLessonPassed, getTutorialType } from '@/utils/tutorials'
+import { debugLog } from '@/utils/debug'
+import countly from '@/utils/countly'
+import translations from '@/static/translations'
+import Button from '@/components/buttons/Button.vue'
+import ButtonLink from '@/components/buttons/ButtonLink.vue'
+import BaseModal from '@/components/modals/BaseModal.vue'
 
 const debugGroup = '[modals/TutorialRedirectModal]'
 

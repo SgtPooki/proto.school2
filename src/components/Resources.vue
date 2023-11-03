@@ -42,13 +42,13 @@
 <script>
 import marked from 'marked'
 
-import ProjectIcon from './icons/ProjectIcon'
-import NewsletterSubscription from './forms/NewsletterSubscription.vue'
-import FeedbackSurvey from './forms/feedback-survey/FeedbackSurvey.vue'
-import ButtonLink from './buttons/ButtonLink.vue'
+import ProjectIcon from '@/components/icons/ProjectIcon.vue'
+import NewsletterSubscription from '@/components/forms/NewsletterSubscription.vue'
+import FeedbackSurvey from '@/components/forms/feedback-survey/FeedbackSurvey.vue'
+import ButtonLink from '@/components/buttons/ButtonLink.vue'
 
-import { getAll } from '../utils/projects'
-import { getTutorialCount, coursesIncludingTutorial } from '../utils/courses'
+import { getAll } from '@/utils/projects'
+import { getTutorialCount, coursesIncludingTutorial } from '@/utils/courses'
 
 export default {
   components: {

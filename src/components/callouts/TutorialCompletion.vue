@@ -32,10 +32,10 @@
   </transition>
 </template>
 <script>
-import ButtonClose from '../buttons/ButtonClose'
-import { getTutorialFullUrl, getTutorialType } from '../../utils/tutorials'
-import settings from '../../utils/settings'
-import countly from '../../utils/countly'
+import ButtonClose from '@/components/buttons/ButtonClose.vue'
+import { getTutorialFullUrl, getTutorialType } from '@/utils/tutorials'
+import settings from '@/utils/settings'
+import countly from '@/utils/countly'
 
 export default {
   components: {

@@ -9,7 +9,7 @@
       data-state-view-transition-delay-leave="default"
       class="question state-view"
     >
-      <p>{{question.text}}<p/>
+      <p>{{question.text}}</p>
       <div class="answers dib">
         <div
           class="answers-list dib"

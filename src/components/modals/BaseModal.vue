@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ButtonClose from '../buttons/ButtonClose'
+import ButtonClose from '@/components/buttons/ButtonClose.vue'
 
 export default {
   name: 'BaseModal',

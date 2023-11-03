@@ -4,7 +4,6 @@
     <div class="input-wrapper" v-for="(choice, idx) in this.choices" :key="`choice-${idx}`">
       <input type="radio"
       :id="idx" :value="idx"
-      v-model="selected"
       @change="handleRadioClick">
       <span class="radio-button" :data-selected="selected">
       </span>
