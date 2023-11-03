@@ -1,9 +1,11 @@
 const log = {
-  debug: (...args) => {
-    console.log('⚙️ api', ...args)
-  }
+
 }
+export function debug (...args) {
+  console.log('⚙️ api', ...args)
+}
+log.debug = debug
 
-log.createLogGroup = module => functionMethod => `[${module}.${functionMethod}()]`
-
-module.exports = log
+export const createLogGroup = module => functionMethod => `[${module}.${functionMethod}()]`
+log.createLogGroup = createLogGroup
+export default log

@@ -1,11 +1,11 @@
-const fs = require('fs')
+import { readFileSync, writeFileSync, copyFileSync } from 'fs'
 
-const errorCode = require('err-code')
-const marked = require('meta-marked')
+import errorCode from 'err-code'
+import marked from 'meta-marked'
 
-const log = require('../logger')
-const debug = require('../debug')
-const config = require('../config')
+import log from '../logger'
+import debug from '../debug'
+import { boilerplates } from '../config'
 
 const logGroup = log.createLogGroup('lessons')
 
@@ -23,7 +23,7 @@ function getNextLessonId (tutorial) {
     : 1
 }
 
-function get (tutorial, lessonId) {
+export function get (tutorial, lessonId) {
   const formattedId = getFormattedId(lessonId)
   const lessonFilePrefix = `${tutorial.folderName}/${formattedId}`
 
@@ -33,7 +33,7 @@ function get (tutorial, lessonId) {
   debug && log.debug(logGroup('get'), tutorial.id, lessonId, formattedId)
 
   try {
-    lessonMd = fs.readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
+    lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
     lesson = {
       id: lessonId,
       formattedId: formattedId,
@@ -93,7 +93,7 @@ export default {
   choices
 }
 `
-  fs.writeFileSync(files.getJsPath(tutorial, lessonId), newFileContent)
+  writeFileSync(files.getJsPath(tutorial, lessonId), newFileContent)
   return get(tutorial, lessonId)
 }
 
@@ -105,7 +105,7 @@ export default {
 */
 
 function isQuizPristine (tutorial, lesson) {
-  let quizContent = fs.readFileSync(files.getJsPath(tutorial, lesson.formattedId), 'utf8')
+  let quizContent = readFileSync(files.getJsPath(tutorial, lesson.formattedId), 'utf8')
   return quizContent.includes('#PRISTINE#')
 }
 
@@ -126,20 +126,20 @@ function isQuizPristine (tutorial, lesson) {
 function create (tutorial, data) {
   const lessonId = getNextLessonId(tutorial)
 
-  let lessonMarkdown = fs.readFileSync(config.boilerplates.markdownPath, 'utf8')
+  let lessonMarkdown = readFileSync(boilerplates.markdownPath, 'utf8')
 
   lessonMarkdown = lessonMarkdown.replace(`title: "Lesson title"`, `title: "${data.title}"`)
   lessonMarkdown = lessonMarkdown.replace(`type: "text"`, `type: "${data.type || 'text'}"`)
 
   if (data.type !== 'text') {
-    fs.copyFileSync(`${config.boilerplates.path}/boilerplate-${data.type}.js`, files.getJsPath(tutorial, lessonId))
+    copyFileSync(`${boilerplates.path}/boilerplate-${data.type}.js`, files.getJsPath(tutorial, lessonId))
 
     if (data.type !== 'multiple-choice') {
-      fs.copyFileSync(config.boilerplates.challengeMarkdownPath, files.getChallengeMarkdownPath(tutorial, lessonId))
+      copyFileSync(boilerplates.challengeMarkdownPath, files.getChallengeMarkdownPath(tutorial, lessonId))
     }
   }
 
-  fs.writeFileSync(files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
+  writeFileSync(files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
 
   return get(tutorial, lessonId)
 }
@@ -158,7 +158,7 @@ files.getChallengeMarkdownPath = (tutorial, lessonId) => (
   `${tutorial.fullPath}/${getFormattedId(lessonId)}-challenge.md`
 )
 
-module.exports = {
+export default {
   getNextLessonId,
   getFormattedId,
   getId,

@@ -2,15 +2,17 @@
 
 const config = {}
 
-config.staticPath = import.meta.env.DATA_STATIC_PATH || 'src/static'
+export const staticPath = import.meta.env.DATA_STATIC_PATH || 'src/static'
+config.staticPath = staticPath
 config.tutorialsPath = import.meta.env.DATA_TUTORIALS_PATH || 'src/tutorials'
 
-config.boilerplates = {}
-config.boilerplates.path = import.meta.env.LESSON_BOILERPLATES_PATH || `${config.tutorialsPath}/boilerplates`
-config.boilerplates.markdownPath = `${config.boilerplates.path}/boilerplate.md`
-config.boilerplates.challengeMarkdownPath = `${config.boilerplates.path}/boilerplate-challenge.md`
-config.boilerplates.multipleChoiceJsPath = `${config.boilerplates.path}/boilerplate-multiple-choice.js`
-config.boilerplates.codeJsPath = `${config.boilerplates.path}/boilerplate-code.js`
-config.boilerplates.fileUploadJsPath = `${config.boilerplates.path}/boilerplate-file-upload.js`
+export const boilerplates = {}
+boilerplates.path = import.meta.env.LESSON_BOILERPLATES_PATH || `${config.tutorialsPath}/boilerplates`
+boilerplates.markdownPath = `${boilerplates.path}/boilerplate.md`
+boilerplates.challengeMarkdownPath = `${boilerplates.path}/boilerplate-challenge.md`
+boilerplates.multipleChoiceJsPath = `${boilerplates.path}/boilerplate-multiple-choice.js`
+boilerplates.codeJsPath = `${boilerplates.path}/boilerplate-code.js`
+boilerplates.fileUploadJsPath = `${boilerplates.path}/boilerplate-file-upload.js`
+config.boilerplates = boilerplates
 
 export default config
