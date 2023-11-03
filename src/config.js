@@ -14,9 +14,9 @@ export const tutorialRedirectModal = {
   }
 }
 
-export const MAILCHIMP_API_URL = process.env.VUE_APP_MAILCHIMP_API_URL
-export const MAILCHIMP_USER_ID = process.env.VUE_APP_MAILCHIMP_USER_ID
-export const MAILCHIMP_LIST_ID = process.env.VUE_APP_MAILCHIMP_LIST_ID
+export const MAILCHIMP_API_URL = import.meta.env.VUE_APP_MAILCHIMP_API_URL
+export const MAILCHIMP_USER_ID = import.meta.env.VUE_APP_MAILCHIMP_USER_ID
+export const MAILCHIMP_LIST_ID = import.meta.env.VUE_APP_MAILCHIMP_LIST_ID
 export const DOMAIN = 'https://proto.school'
 
 export default {

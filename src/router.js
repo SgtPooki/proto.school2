@@ -1,4 +1,5 @@
-import VueRouter from 'vue-router'
+// import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import { migrateCache } from './utils/paths.js'
 import routes from './routes.js'
@@ -9,7 +10,7 @@ import { defineAsyncComponent } from 'vue'
 // Migrate cache using configured redirects
 migrateCache()
 
-const router = new VueRouter({
+const router = new createRouter({
   routes: [
     ...routes.statics(),
     ...routes.errors(),
@@ -42,7 +43,7 @@ const router = new VueRouter({
       redirect: '404'
     }
   ],
-  mode: 'history',
+  history: createWebHistory(),
   scrollBehavior (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }
   }

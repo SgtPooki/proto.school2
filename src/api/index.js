@@ -8,11 +8,18 @@
  *
  * @module api
  */
-module.exports = {
-  projects: require('./modules/projects'),
-  lessons: require('./modules/lessons'),
-  courses: require('./modules/courses'),
-  resources: require('./modules/resources'),
-  tutorials: require('./modules/tutorials'),
-  _config: require('./config')
+import projects from './modules/projects.js'
+import lessons from './modules/lessons.js'
+import courses from './modules/courses.js'
+import resources from './modules/resources.js'
+import tutorials from './modules/tutorials.js'
+import _config from './config.js'
+
+export default {
+  projects,
+  lessons,
+  courses,
+  resources,
+  tutorials,
+  _config,
 }

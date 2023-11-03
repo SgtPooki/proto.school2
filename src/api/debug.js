@@ -1,1 +1,2 @@
-module.exports = (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && process.env.DEBUG
+const isDebug = (import.meta.env.NODE_ENV === 'development' || import.meta.env.NODE_ENV === 'test') && import.meta.env.DEBUG
+export default isDebug

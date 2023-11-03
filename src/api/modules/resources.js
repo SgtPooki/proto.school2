@@ -1,6 +1,6 @@
 const log = require('../logger')
 const debug = require('../debug')
-const tutorialsApi = require('./tutorials')
+const tutorialsApi = require('./tutorials').default
 const utils = require('../utils')
 
 const logGroup = functionMethod => `[resources.${functionMethod}()]`

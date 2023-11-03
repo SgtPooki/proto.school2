@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { defineAsyncComponent } from 'vue'
+import api from './api/index.js'
 
 const lastmod = moment().format('YYYY-MM-DD')
 
@@ -126,7 +127,6 @@ function errors () {
   `redirectUrls` property will also be read to generate equivalent redirect routes
 */
 function tutorials () {
-  const api = require('./api')
 
   return Object.values(api.tutorials.list.get()).reduce((routes, tutorial) => {
     routes.push({

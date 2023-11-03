@@ -2,7 +2,7 @@
 import 'tachyons'
 import 'ipfs-css'
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+// import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import VueMeta from 'vue-meta'
 import VueTooltip from 'v-tooltip'
 import PortalVue from 'portal-vue'
@@ -17,7 +17,7 @@ import router from './router'
 import stateInit from './state/init'
 
 Vue
-  .use(VueRouter)
+  // .use(VueRouter)
   .use(VueMeta, { keyName: 'head', refreshOnceOnNavigation: true })
   .use(hljsVuePlugin)
   .use(VueTooltip)
