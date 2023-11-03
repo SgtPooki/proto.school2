@@ -1,0 +1,16 @@
+/*
+  Error code strings used in IPFS
+*/
+export const errorCodes = {
+  ERR_NOT_FOUND: 'ERR_NOT_FOUND',
+  ERR_NO_EXIST: 'ERR_NO_EXIST',
+  ERR_MORE_THAN_ONE_ROOT: 'ERR_MORE_THAN_ONE_ROOT',
+  ERR_INVALID_PATH: 'ERR_INVALID_PATH',
+  ERR_WAS_DIR: 'ERR_WAS_DIR',
+  ERR_INVALID_PARAMS: 'ERR_INVALID_PARAMS',
+  EINVALIDCHILDNAME: 'EINVALIDCHILDNAME'
+}
+
+export default {
+  errorCodes
+}

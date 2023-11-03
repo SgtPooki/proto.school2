@@ -1,85 +1,114 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div id="app">
+    <router-view :key="$route.path"></router-view>
+    <portal-target name="modal"></portal-target>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+import './styles/index.css'
+import head from './utils/head'
+
+export default {
+  name: 'app',
+  head: head.root()
+}
+</script>
+
+<style>
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-.logo {
+/*
+   Document
+
+   1. Stretch <html> stretch to fill our screen height
+   2. Make children of html (body) occupy at least 100% of the screen
+   3. Viewport is scalable and occupies at least 320px (iPhone SE)
+*/
+
+html {
+    min-width: 25em;
+    height: 0; /* 3 */
+    min-height: 100%; /* 1 */
+    display: flex; /* 2 */
+    flex-direction: column; /* 2 */
+}
+
+/*
+   Body & #app
+
+   1. Force scroll always to prevent scrollbars to appear/disappear based on the page contents
+   2. Make sure that we occupy 100% of our parent and allow our child elements to do the same
+   3. Disable rubber band scrolling
+*/
+
+body {
+    overflow-y: scroll; /* 1 */
+    display: flex; /* 2 */
+    flex: 1 0 auto; /* 2 */
+    flex-direction: column; /* 2 */
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  height: 100%;
+}
+
+#app > div:not(.vue-portal-target) {
+  display: flex; /* 2 */
+  flex: 1 0 auto; /* 2 */
+  flex-direction: column; /* 2 */
+  height: 100%;
+}
+
+#app > div > div.home,
+#app > div > footer {
+  flex: 0 0 auto; /* 2 */
+}
+
+#app > div > section {
+  flex: 1 0 auto; /* 2 */
+}
+
+pre {
+  overflow: auto;
+}
+
+.focus-outline:focus {
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba(201, 210, 215, .4);
+}
+
+.code, code {
+  border-radius: 3px;
+  background-color: rgba(27,31,35,0.05);
+  padding: 0.1rem 0.3rem 0.15rem;
+  margin: 0 -0.1rem;
+  font-size: 85%;
+  font-family: SFMono-Regular, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+}
+
+pre code {
+  margin: 0.5rem 0;
+  padding: 0.6rem 0.8rem;
   display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
   font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  overflow: auto;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.fill-current {
+  fill: currentColor;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+* {
+  outline-color: var(--color-teal-muted);
 }
 </style>
