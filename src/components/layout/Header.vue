@@ -17,8 +17,8 @@
           </div>
         </div>
       </section>
-      <Navigation :hidden="hidden"/>
       <HeliaMigrationBanner />
+      <Navigation :hidden="hidden"/>
     </header>
   </div>
 </template>
