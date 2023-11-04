@@ -82,8 +82,8 @@ export default {
   },
   data: self => {
     return {
-      // resourcesLesson,
-      // isTutorialPassed
+      resourcesLesson,
+      isTutorialPassed
     }
   },
   computed: {
