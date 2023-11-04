@@ -19,13 +19,6 @@ import { getLesson } from './lessons'
 import { getProject } from './projects'
 import tutorialsJsonImport from '../../static/tutorials.json'
 
-
-const tutorialsImports = import.meta.glob('@/tutorials/[0-9]*/**')
-console.log(`tutorialsImports: `, tutorialsImports);
-// const content = await (tutorialsImports['/src/tutorials/0001-content-addressing/01.md']())
-const content = await import('@/tutorials/0001-content-addressing/01.md')
-console.log(`tutorialsImports content: `, content.default);
-// console.log('tutorialsImports 01', )
 const STATIC_FILE = 'tutorials.json'
 
 const logGroup = createLogGroup('tutorials')
@@ -65,7 +58,6 @@ async function getProcessedTutorial (id) {
   if (!tutorialsJson[formattedId]) {
     throw errorCode(new Error(`NOT FOUND: Tutorial with id ${id} not found.`), 'NOT_FOUND')
   }
-  console.log(`tutorialsJson[formattedId]: `, tutorialsJson[formattedId]);
 
   const tutorial = { ...tutorialsJson[formattedId] }
 

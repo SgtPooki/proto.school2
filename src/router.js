@@ -4,42 +4,46 @@ import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 import { migrateCache } from './utils/paths.js'
 import routes from './routes.js'
 import { defineAsyncComponent } from 'vue'
-
+import LandingPage from './pages/Landing.vue'
+import CoursePage from './pages/Course.vue'
+import LessonPage from './pages/Lesson.vue'
+import ResourcesLessonPage from './pages/ResourcesLesson.vue'
 // const routes = require('./routes')
 
 // Migrate cache using configured redirects
 migrateCache()
 
-// const redirectRoutes = await routes.redirects()
+const redirectRoutes = await routes.redirects()
 
 export const router = new createRouter({
   routes: [
     ...routes.statics(),
     ...routes.errors(),
-    // ...redirectRoutes,
+    ...redirectRoutes,
     // Dynamic routes
     {
       path: '/course/:courseUrl',
-      component: () => defineAsyncComponent(() => import('./pages/Course.vue')),
+      component: CoursePage,
       props: true
     },
     {
       path: '/:tutorialUrl',
-      component: () => defineAsyncComponent(() => import('./pages/Landing.vue')),
+      component: LandingPage,
       props: true
     },
     {
       path: '/:tutorialUrl/resources',
-      component: () => defineAsyncComponent(() => import('./pages/ResourcesLesson.vue')),
+      component: ResourcesLessonPage,
       props: true,
       name: 'Resources'
     },
     {
       path: '/:tutorialUrl/:lessonId',
-      component: () => defineAsyncComponent(() => import('./pages/Lesson.vue')),
+      component: LessonPage,
       props: true
     },
     // 404
+    // TODO: vue-router.mjs:1321 Uncaught Error: Catch all routes ("*") must now be defined using a param with a custom regexp.
     // {
     //   path: '*',
     //   redirect: '404'

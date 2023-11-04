@@ -49,8 +49,9 @@ import marked from '../utils/marked'
 import Lesson from '../components/Lesson.vue'
 import FileLesson from '../components/FileLesson.vue'
 import MultipleChoiceLesson from '../components/MultipleChoiceLesson.vue'
-import dynamicMdImport from '../utils/dynamicMdImport'
+import { getTutorialImport } from '../utils/tutorials-helper.js'
 import { ref, onMounted } from 'vue'
+// const tutorialsImports = import.meta.glob('@/tutorials/[0-9]*/**')
 
 export default {
   components: {
@@ -71,18 +72,21 @@ export default {
     }
     onMounted(async () => {
       const newLoadedFilesValue = {}
+      const tutorialPath = `${tutorial.formattedId}-${tutorial.url}/${props.lessonId}`
+
       try {
-        newLoadedFilesValue.md = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}.md`)
+        newLoadedFilesValue.md = await getTutorialImport(`${tutorialPath}.md`)
       } catch {}
       try {
-        newLoadedFilesValue.concepts = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}-concepts.md`)
+        newLoadedFilesValue.concepts = await getTutorialImport(`${tutorialPath}-concepts.md`)
       } catch {}
       try {
-        newLoadedFilesValue.challenge = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}-challenge.md`)
+        newLoadedFilesValue.challenge = await getTutorialImport(`${tutorialPath}-challenge.md`)
       } catch {}
       try {
-        newLoadedFilesValue.js = await import(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}.js`)
+        newLoadedFilesValue.js = await getTutorialImport(`${tutorialPath}.js`)
       } catch {}
+
       loadedFiles.value = newLoadedFilesValue
     })
     return {
@@ -92,7 +96,7 @@ export default {
   },
   computed: {
     lesson: function () {
-      const lesson = this.loadedFiles['md'] && marked(this.loadedFiles['md'])
+      const lesson = this.loadedFiles.md && marked(this.loadedFiles.md)
       return lesson
     },
     lessonNeedsJsFile: function () {
@@ -105,12 +109,12 @@ export default {
       )
     },
     concepts: function () {
-      const concepts = this.loadedFiles['concepts']
+      const concepts = this.loadedFiles.concepts
 
       return concepts ? marked(concepts).html : ''
     },
     challenge: function () {
-      const challenge = this.lessonNeedsChallengeFile && this.loadedFiles['challenge']
+      const challenge = this.lessonNeedsChallengeFile && this.loadedFiles.challenge
 
       return challenge ? marked(challenge).html : ''
     },
@@ -123,18 +127,23 @@ export default {
         }
       }
 
+
       if (!this.tutorial || !this.lesson || !this.lessonNeedsJsFile) {
         return logic
       }
 
-      let fileLogic = this.loadedFiles['js']
+      if (!this.loadedFiles.js) {
+        console.error(`No JavaScript file found '${this.tutorial.formattedId}-${this.tutorial.url}/${this.lessonId}'. Please create a JavaScript file for this lesson.`)
+        return logic
+      }
 
+      let fileLogic = this.loadedFiles.js
       logic = {
         ...logic,
-        ...fileLogic.default,
+        ...fileLogic,
         options: {
           ...logic.options,
-          ...fileLogic.default.options
+          ...fileLogic.options
         }
       }
 

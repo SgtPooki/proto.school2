@@ -49,6 +49,7 @@
     "jsdom": "^22.1.0",
     "prettier": "^3.0.3",
     "vite": "^4.4.11",
+    "vite-plugin-monaco-editor": "^1.1.0",
     "vite-plugin-ssr": "^0.4.142",
     "vite-ssg": "^0.23.4",
     "vite-svg-loader": "^4.0.0",

@@ -1,6 +1,7 @@
 import moment from 'moment'
 // import { defineAsyncComponent } from 'vue'
-import dynamicMdImport from './dynamicMdImport.js'
+// import dynamicMdImport from './dynamicMdImport.js'
+import {getTutorialImport} from './tutorials-helper.js'
 
 import marked from './marked'
 import projects from './projects'
@@ -58,13 +59,13 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
   const formattedId = lessonNumber.toString().padStart(2, 0)
   const lessonFilePrefix = `${tutorial.formattedId}-${tutorial.url}/${formattedId}`
 
-  const importPath = `../tutorials/${lessonFilePrefix}.md`
+  // const importPath = `../tutorials/${lessonFilePrefix}.md`
 
   let lessonMd
   let lesson
 
   try {
-    const lessonMdRaw = await dynamicMdImport(importPath)
+    const lessonMdRaw = await getTutorialImport(`${lessonFilePrefix}.md`)
     lessonMd = marked(lessonMdRaw)
 
     lesson = {
@@ -76,7 +77,7 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
     }
   } catch (error) {
     // lesson not found, we reached the end
-    if (error.code === 'MODULE_NOT_FOUND') {
+    if (error.code === 'MODULE_NOT_FOUND' || error.code === 'ERR_MODULE_NOT_FOUND' ) {
       return lessons
     }
 
@@ -86,20 +87,24 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
         new Error(`Data improperly formatted in the lesson markdown file "${lessonFilePrefix}.md". Check that the YAML syntax is correct.`)
       )
     }
-    throw error
+    // throw error
   }
 
   if (lesson.type !== 'text') {
+    console.log('lesson.type', lesson.type)
     try {
-      const lessonMod = await import(`/src/tutorials/${lessonFilePrefix}.js`)
-      lesson.logic = lessonMod.default
+      const lessonMod = await getTutorialImport(`${lessonFilePrefix}.js`)
+      // const lessonMod = await import(`/src/tutorials/${lessonFilePrefix}.js`)
+      lesson.logic = lessonMod
     } catch (error) {
-      if (error.code === 'MODULE_NOT_FOUND') {
+      console.log(`error: `, error);
+      console.log(`error.code: `, error.code);
+      if (error.code === 'MODULE_NOT_FOUND' || error.code === 'ERR_MODULE_NOT_FOUND') {
         console.error(
           new Error(`You are missing the file "${lessonFilePrefix}.js" required for lessons of type ${lesson.type}.`)
         )
       }
-      throw error
+      // throw error
     }
   }
   lessons.push(lesson)
@@ -185,6 +190,9 @@ export function isTutorialPartiallyPassed (tutorial) {
 }
 
 export function hasTutorialBeenUpdatedRecently (tutorial) {
+  if (import.meta.env.SSR) {
+    return false
+  }
   const updatedAtDate = new Date(tutorial.updatedAt)
   const tutorialPassedAt = localStorage[`passed/${tutorial.url}`]
   const tutorialHasUpdates =

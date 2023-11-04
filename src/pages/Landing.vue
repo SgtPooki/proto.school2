@@ -25,9 +25,11 @@ export default {
   computed: {
     tutorial: function () {
       const tutorial = getTutorialByUrl(this.tutorialUrl)
+      // console.log('tutorialUrl', this.tutorialUrl)
 
       // If no tutorial was found, redirect to 404 page
       if (!tutorial) {
+        console.log('calling this.$router.replace({ name: 404 })')
         this.$router.replace({ name: '404' })
 
         return null

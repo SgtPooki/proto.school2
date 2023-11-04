@@ -9,6 +9,11 @@ import NewsPage from './pages/News.vue'
 import HostPage from './pages/Host.vue'
 import BuildPage from './pages/Build.vue'
 import ContributePage from './pages/Contribute.vue'
+import LandingPage from './pages/Landing.vue'
+import CoursePage from './pages/Course.vue'
+import LessonPage from './pages/Lesson.vue'
+import ResourcesLessonPage from './pages/ResourcesLesson.vue'
+import NotFoundPage from './pages/NotFound.vue'
 
 const lastmod = moment().format('YYYY-MM-DD')
 
@@ -87,7 +92,6 @@ async function redirects () {
   // TODO Use API to get the tutorials (needs API to be universal)
   // https://github.com/ProtoSchool/protoschool.github.io/issues/589
   const tutorialsList = await api.tutorials.list.get()
-  console.log(`tutorialsList: `, tutorialsList);
 
   const tutorialRedirects = Object.values(tutorialsList).reduce((redirects, tutorial) => {
     if (tutorial.redirectUrls && tutorial.redirectUrls.length) {
@@ -104,7 +108,7 @@ async function redirects () {
     return redirects
   }, [])
 
-  return [
+  const finalRedirects = [
     ...tutorialRedirects,
     { path: '/chapters/', redirect: '/events/' },
     { path: '/data-structures/', redirect: '/content-addressing/' },
@@ -115,6 +119,8 @@ async function redirects () {
     { path: '/data-structures/04/', redirect: '/content-addressing/04/' },
     { path: '/data-structures/05/', redirect: '/content-addressing/05/' }
   ].map(route => ({ ...route, type: TYPES.REDIRECT }))
+
+  return finalRedirects
 }
 
 // Error routes
@@ -123,7 +129,7 @@ function errors () {
     {
       path: '/404/',
       name: '404',
-      component: () => defineAsyncComponent(() => import('./pages/NotFound.vue'))
+      component: NotFoundPage
     }
   ].map(route => ({ ...route, type: TYPES.ERROR })).map(addSitemapLoc)
 }
@@ -136,25 +142,24 @@ function errors () {
 
   `redirectUrls` property will also be read to generate equivalent redirect routes
 */
-function tutorials () {
-  return []
-  // return Object.values(api.tutorials.list.get()).reduce((routes, tutorial) => {
-  //   routes.push({
-  //     type: TYPES.TUTORIAL,
-  //     path: `/${tutorial.url}/`,
-  //     sitemap: { priority: 1, changefreq: 'monthly', lastmod }
-  //   })
-  //   routes.push({
-  //     type: TYPES.RESOURCES,
-  //     path: `/${tutorial.url}/resources/`
-  //   })
+async function tutorials () {
+  return Object.values(await api.tutorials.list.get()).reduce((routes, tutorial) => {
+    routes.push({
+      type: TYPES.TUTORIAL,
+      path: `/${tutorial.url}/`,
+      sitemap: { priority: 1, changefreq: 'monthly', lastmod }
+    })
+    routes.push({
+      type: TYPES.RESOURCES,
+      path: `/${tutorial.url}/resources/`
+    })
 
-  //   return routes.concat(tutorial.lessons.map(lesson => ({
-  //     type: TYPES.LESSON,
-  //     path: `/${lesson.url}/`,
-  //     sitemap: { priority: 1, changefreq: 'monthly', lastmod }
-  //   })))
-  // }, []).map(addSitemapLoc)
+    return routes.concat(tutorial.lessons.map(lesson => ({
+      type: TYPES.LESSON,
+      path: `/${lesson.url}/`,
+      sitemap: { priority: 1, changefreq: 'monthly', lastmod }
+    })))
+  }, []).map(addSitemapLoc)
 }
 
 /* Course routes. These are used to prerender and to be added to the sitemap
@@ -165,7 +170,6 @@ function tutorials () {
 */
 function courses () {
   return []
-
   // return api.courses.getCourseNames().map(course => {
   //   return {
   //     type: TYPES.COURSE,
@@ -175,13 +179,35 @@ function courses () {
   // }).map(addSitemapLoc)
 }
 
-function all () {
+async function all () {
   return [
     ...statics(),
-    ...tutorials(),
+    ...(await tutorials()),
     ...courses(),
     ...errors(),
-    // ...redirects()
+    ...(await redirects()),
+    // dynamic routes
+    {
+      path: '/course/:courseUrl',
+      component: CoursePage,
+      props: true
+    },
+    {
+      path: '/:tutorialUrl',
+      component: LandingPage,
+      props: true
+    },
+    {
+      path: '/:tutorialUrl/resources',
+      component: ResourcesLessonPage,
+      props: true,
+      name: 'Resources'
+    },
+    {
+      path: '/:tutorialUrl/:lessonId',
+      component: LessonPage,
+      props: true
+    },
   ]
 }
 

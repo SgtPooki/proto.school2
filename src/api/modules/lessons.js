@@ -6,6 +6,7 @@ import marked from 'meta-marked'
 import log from '../logger'
 import debug from '../debug'
 import { boilerplates } from '../config'
+import {getTutorialImport} from '../../utils/tutorials-helper.js'
 
 const logGroup = log.createLogGroup('lessons')
 
@@ -55,7 +56,7 @@ export async function getLesson (tutorial, lessonId) {
     }
     // lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
     // lessonMd = `placeHolder for lessonMd for ${tutorial.id} ${lessonId} ${formattedId}}`
-    lessonMd =
+    lessonMd = await getTutorialImport(`${lessonFilePrefix}.md`)
     console.log(`lessonMd: `, lessonMd);
     lesson = {
       id: lessonId,
@@ -88,12 +89,6 @@ export async function getLesson (tutorial, lessonId) {
         new Error(`Data improperly formatted in the lesson markdown file "${lessonFilePrefix}.md". Check that the YAML syntax is correct.`)
       )
     }
-    console.log(error)
-    Object.keys(error).forEach(key => {
-      console.log(`error.${key}: `, error[key]);
-    })
-    console.log(`error.code: `, error.code);
-    throw error
   }
 
   return lesson

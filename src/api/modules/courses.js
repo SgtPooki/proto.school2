@@ -1,20 +1,25 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
+// import { readFileSync } from 'fs'
+// import { resolve } from 'path'
 
 import { staticPath } from '../config'
 import { writeStaticFile } from '../utils'
 import { getFormattedId } from './tutorials'
-
+import coursesJsonImport from '../../static/courses.json'
+const coursesPath = import.meta.glob('../../static/courses.json')
+console.log(`coursesPath: `, coursesPath['../../static/courses.json']);
 const STATIC_FILE = 'courses.json'
+const coursesModule = await coursesPath['../../static/courses.json']()
+console.log(`coursesModule: `, coursesModule);
 
-function getStaticPath () {
-  return resolve(staticPath, STATIC_FILE)
-}
+// function getStaticPath () {
+//   return resolve(staticPath, STATIC_FILE)
+// }
 
 function get () {
-  const coursesJson = readFileSync(getStaticPath(), 'utf8')
+  const coursesJson = coursesJsonImport
 
-  return JSON.parse(coursesJson)
+  // return JSON.parse(coursesJson)
+  return coursesJson
 }
 
 function getAll () {
@@ -57,7 +62,7 @@ async function remove (id) {
 }
 
 export default {
-  getStaticPath,
+  // getStaticPath,
   get,
   getAll,
   getFeatured,

@@ -43,11 +43,13 @@
 import CompleteIcon from '../static/images/complete.svg'
 
 // import countly from '../utils/countly'
-import MonacoEditor from 'monaco-editor-vue'
+// import MonacoEditor from 'monaco-editor-vue'
+// import MonacoEditor from './MonacoEditorVue.vue'
+// import MonacoEditor from './MonacoEditor.vue'
 
 export default {
   components: {
-    MonacoEditor,
+    // MonacoEditor,
     CompleteIcon
   },
   props: {
