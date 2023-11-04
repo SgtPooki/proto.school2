@@ -10,11 +10,13 @@ import { defineAsyncComponent } from 'vue'
 // Migrate cache using configured redirects
 migrateCache()
 
+// const redirectRoutes = await routes.redirects()
+
 export const router = new createRouter({
   routes: [
     ...routes.statics(),
     ...routes.errors(),
-    ...routes.redirects(),
+    // ...redirectRoutes,
     // Dynamic routes
     {
       path: '/course/:courseUrl',

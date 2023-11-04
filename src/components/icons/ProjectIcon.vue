@@ -31,15 +31,12 @@ export default {
   },
   name: 'ProjectIcon',
   components: {
-    // {
-
-    // }
-    // DWebIcon,
-    // FilecoinIcon,
-    // IPFSIcon,
-    // IPLDIcon,
-    // Libp2pIcon,
-    // MultiformatsIcon
+    DWebIcon,
+    FilecoinIcon,
+    IPFSIcon,
+    IPLDIcon,
+    Libp2pIcon,
+    MultiformatsIcon
   },
   props: {
     id: String,

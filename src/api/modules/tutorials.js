@@ -4,20 +4,28 @@
  * @module api/tutorials
  */
 
-import { mkdirSync, readFileSync } from 'fs'
-import { resolve } from 'path'
+// import { mkdirSync, readFileSync } from 'fs'
+// import { resolve } from 'path'
 
 import errorCode from 'err-code'
 import { findKey } from 'lodash'
-import { deleteSync as sync } from 'del'
+// import { deleteSync as sync } from 'del'
 
 import { createLogGroup, debug as _debug } from '../logger'
 import debug from '../debug'
 import { tutorialsPath, staticPath } from '../config'
 import { deriveShortname, writeStaticFile } from '../utils'
-import { get as _get } from './lessons'
-import { get as __get } from './projects'
+import { getLesson } from './lessons'
+import { getProject } from './projects'
+import tutorialsJsonImport from '../../static/tutorials.json'
 
+
+const tutorialsImports = import.meta.glob('@/tutorials/[0-9]*/**')
+console.log(`tutorialsImports: `, tutorialsImports);
+// const content = await (tutorialsImports['/src/tutorials/0001-content-addressing/01.md']())
+const content = await import('@/tutorials/0001-content-addressing/01.md')
+console.log(`tutorialsImports content: `, content.default);
+// console.log('tutorialsImports 01', )
 const STATIC_FILE = 'tutorials.json'
 
 const logGroup = createLogGroup('tutorials')
@@ -41,7 +49,8 @@ function getId (formattedId) {
  *
  * @returns Final tutorial data
  */
-function get (id) {
+async function getProcessedTutorial (id) {
+  console.log(`getProcessedTutorial id: `, id);
   const tutorialsJson = list.getJson()
   let tutorialId = id
 
@@ -49,11 +58,14 @@ function get (id) {
     tutorialId = findKey(tutorialsJson, tutorial => tutorial.url === id.url)
   }
 
+  console.log(`tutorialId: `, tutorialId);
   const formattedId = getFormattedId(tutorialId)
+  console.log(`formattedId: `, formattedId);
 
   if (!tutorialsJson[formattedId]) {
     throw errorCode(new Error(`NOT FOUND: Tutorial with id ${id} not found.`), 'NOT_FOUND')
   }
+  console.log(`tutorialsJson[formattedId]: `, tutorialsJson[formattedId]);
 
   const tutorial = { ...tutorialsJson[formattedId] }
 
@@ -62,9 +74,11 @@ function get (id) {
   tutorial.formattedId = formattedId
   tutorial.shortTitle = deriveShortname(tutorial.url)
   tutorial.folderName = `${tutorial.formattedId}-${tutorial.url}`
-  tutorial.fullPath = resolve(`${tutorialsPath}/${tutorial.folderName}`)
-  tutorial.lessons = getLessons(tutorial)
-  tutorial.project = __get(tutorial.project)
+  // tutorial.fullPath = resolve(`${tutorialsPath}/${tutorial.folderName}`)
+  tutorial.fullPath = `${tutorialsPath}/${tutorial.folderName}`
+  console.log('${tutorialsPath}/${tutorial.folderName}:', `${tutorialsPath}/${tutorial.folderName}`);
+  tutorial.lessons = await getLessons(tutorial)
+  tutorial.project = await getProject(tutorial.project)
 
   debug && _debug(logGroup('get'), tutorial)
 
@@ -74,7 +88,7 @@ function get (id) {
 function getByUrl (url) {
   const tutorialsList = list.getJson()
 
-  const tutorial = get(Object.values(tutorialsList).find(tutorial => tutorial.url === url))
+  const tutorial = list.get(Object.values(tutorialsList).find(tutorial => tutorial.url === url))
   debug && _debug(logGroup('getByUrl'), url, tutorial)
 
   if (!tutorial) {
@@ -84,21 +98,23 @@ function getByUrl (url) {
   return tutorial
 }
 
-function getLessons (tutorial, lessons = [], lessonId = 1) {
+async function getLessons (tutorial, lessons = [], lessonId = 1) {
   let lesson
 
   try {
-    lesson = _get(tutorial, lessonId)
+    lesson = await getLesson(tutorial, lessonId)
   } catch (error) {
     // lesson not found, we reached the end
     if (error.code === 'NOT_FOUND') {
       return lessons
     }
+    return lessons;
 
-    throw error
+    // throw error
   }
 
   lessons.push(lesson)
+  console.log('calling getLessons again', lessonId + 1)
 
   return getLessons(tutorial, lessons, lessonId + 1)
 }
@@ -110,7 +126,8 @@ function getFolderName (id, url) {
 }
 
 function getFullPath (id, url) {
-  return resolve(tutorialsPath, getFolderName(id, url))
+  // return resolve(tutorialsPath, getFolderName(id, url))
+  return `${tutorialsPath}/${getFolderName(id, url)}`
 }
 
 /**
@@ -130,64 +147,66 @@ function getFullPath (id, url) {
  *    description: 'Learn how peers interact with each other in libp2p.'
  * })
  */
-function create (data) {
-  const newTutorialId = getNextTutorialId()
+// function create (data) {
+//   const newTutorialId = getNextTutorialId()
 
-  debug && _debug(logGroup('create'), newTutorialId, data.url)
+//   debug && _debug(logGroup('create'), newTutorialId, data.url)
 
-  // create new directory
-  mkdirSync(getFullPath(newTutorialId, data.url))
+//   // create new directory
+//   mkdirSync(getFullPath(newTutorialId, data.url))
 
-  const tutorial = {
-    id: newTutorialId,
-    formattedId: getFormattedId(newTutorialId),
-    url: data.url,
-    project: data.project,
-    title: data.title,
-    description: data.description || '',
-    newMessage: data.newMessage || '',
-    updateMessage: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    resources: []
-  }
+//   const tutorial = {
+//     id: newTutorialId,
+//     formattedId: getFormattedId(newTutorialId),
+//     url: data.url,
+//     project: data.project,
+//     title: data.title,
+//     description: data.description || '',
+//     newMessage: data.newMessage || '',
+//     updateMessage: '',
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     resources: []
+//   }
 
-  list.add(tutorial)
+//   list.add(tutorial)
 
-  return get(newTutorialId)
-}
+//   return get(newTutorialId)
+// }
 
-function remove (id) {
-  // delete tutorial folder
-  sync(getFullPath(id))
+// function remove (id) {
+//   // delete tutorial folder
+//   sync(getFullPath(id))
 
-  const tutorials = list.getJson()
+//   const tutorials = list.getJson()
 
-  debug && _debug(logGroup('remove'), id, tutorials[getFormattedId(id)].url)
+//   debug && _debug(logGroup('remove'), id, tutorials[getFormattedId(id)].url)
 
-  // delete tutorial metadata from static file
-  delete tutorials[getFormattedId(id)]
-  writeStaticFile(STATIC_FILE, tutorials)
-}
+//   // delete tutorial metadata from static file
+//   delete tutorials[getFormattedId(id)]
+//   writeStaticFile(STATIC_FILE, tutorials)
+// }
 
-const list = {}
+export const list = {}
 
 list.getStaticPath = function getStaticPath () {
-  return resolve(staticPath, STATIC_FILE)
+  return 'static/tutorials.json'
 }
 
 list.getJson = function getJson () {
-  const tutorialsJson = readFileSync(list.getStaticPath(), 'utf8')
+  // const tutorialsJson = readFileSync(list.getStaticPath(), 'utf8')
+  // const tutorialsJson =
 
-  return JSON.parse(tutorialsJson)
+  return tutorialsJsonImport
 }
 
-list.get = function listGet () {
+list.get = async function listGet () {
   const tutorialsJson = list.getJson()
   const tutorials = {}
 
   for (let id in tutorialsJson) {
-    tutorials[id] = get(tutorialsJson[id])
+    console.log(`listGet tutorialsJson[id]: `, tutorialsJson[id]);
+    tutorials[id] = await getProcessedTutorial(id)
   }
 
   return tutorials
@@ -214,13 +233,13 @@ export default {
   // methods
   getFormattedId,
   getId,
-  get,
+  getProcessedTutorial,
   getByUrl,
   getFolderName,
   getFullPath,
   getLessons,
   getNextTutorialId,
-  create,
-  remove,
+  // create,
+  // remove,
   list
 }

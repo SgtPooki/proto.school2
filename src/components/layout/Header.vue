@@ -23,13 +23,13 @@
 </template>
 
 <script>
-// import ProtoSchoolLogo from '../../static/images/ps_symbol_color.svg'
+import ProtoSchoolLogo from '@/static/images/ps_symbol_color.svg'
 
 import Navigation from './Navigation.vue'
 export default {
   name: 'Header',
   components: {
-    // ProtoSchoolLogo,
+    ProtoSchoolLogo,
     Navigation
   },
   props: {

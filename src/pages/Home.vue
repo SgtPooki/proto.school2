@@ -94,35 +94,6 @@ import { futureEvents } from '../utils/events.js'
 import { getAll } from '../utils/projects.js'
 import { getCourseNames, getTutorialCount } from '../utils/courses.js'
 
-// const asyncComponent = async () => {
-//   return {
-//     name: 'Home',
-//     displayName: 'Home',
-//     components: {
-//       Header,
-//       Footer,
-//       TutorialsGrid,
-//       EventCard,
-//       ButtonLink,
-//       ProjectIcon
-//     },
-//     data: self => {
-//       return {
-//         futureEvents,
-//         getTutorialCount
-//       }
-//     },
-//     computed: {
-//       featuredTutorials: () => coursesList.featured.map(tutorialId => ({ ...tutorials[tutorialId], tutorialId })),
-//       courses: () => getAll().filter(course => getCourseNames().includes(course.id)).sort((a, b) => getTutorialCount(b.id) - getTutorialCount(a.id))
-//     },
-//     head () {
-//       return head()
-//     }
-//   }
-// }
-// export default asyncComponent
-
 export default {
   name: 'Home',
   displayName: 'Home',

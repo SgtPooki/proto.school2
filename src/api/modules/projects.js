@@ -12,19 +12,18 @@ function getStaticPath () {
 const list = {}
 
 list.get = async function listGet () {
-  // console.log(getStaticPath())
-  const { projects } = await import(getStaticPath())
-  console.log(`projects: `, projects);
+  const {default: projects} = await import('../../static/projects.json')
+
   return projects
   // return JSON.parse(readFileSync(getStaticPath(), 'utf8'))
 }
 
-export function get (id) {
-  return list.get().find(project => project.id === id)
+export async function getProject (id) {
+  return (await list.get()).find(project => project.id === id)
 }
 
 export default {
   getStaticPath,
-  get,
+  getProject,
   list
 }

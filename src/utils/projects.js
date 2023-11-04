@@ -5,8 +5,7 @@ import { defineAsyncComponent } from 'vue'
 // Populate data with more properties
 
 data.forEach(project => {
-  // project.logo = require(`../static/images/projects/${project.id}.svg`)
-  project.logo = defineAsyncComponent(() => import(`../static/images/projects/${project.id}.svg`))
+  project.logo = defineAsyncComponent(() => import(`@/static/images/projects/${project.id}.svg`))
 })
 
 export function get (id) {

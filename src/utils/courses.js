@@ -1,5 +1,6 @@
 import coursesJson from '../static/courses.json'
-const courses = (window.__DATA__ && window.__DATA__.courses) || coursesJson
+// const courses = (window.__DATA__ && window.__DATA__.courses) || coursesJson
+const courses = coursesJson
 
 // returns unsorted array of course ids (eg. [ipfs, multiformats, filecoin])
 export function getCourseNames () {

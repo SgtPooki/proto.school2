@@ -23,9 +23,10 @@ function getNextLessonId (tutorial) {
     : 1
 }
 
-export function get (tutorial, lessonId) {
+export async function getLesson (tutorial, lessonId) {
   const formattedId = getFormattedId(lessonId)
   const lessonFilePrefix = `${tutorial.folderName}/${formattedId}`
+  console.log(`lessonFilePrefix: `, lessonFilePrefix);
 
   let lessonMd
   let lesson
@@ -33,8 +34,26 @@ export function get (tutorial, lessonId) {
   debug && log.debug(logGroup('get'), tutorial.id, lessonId, formattedId)
 
   try {
+    const mdPath = files.getMarkdownPath(tutorial, lessonId)
+    console.log(`mdPath: `, mdPath);
+    // const testLessonMd = import.meta.glob(`@/tutorials/${lessonFilePrefix}.md`)
+    try {
+
+    lessonMd = await import(/* @vite-ignore */ mdPath)
+    // console.log(`testLessonMd: `, testLessonMd);
+    } catch (err) {
+      // throw ENOENT error if file not found
+      // if (err.code === 'ENOENT') {
+        throw errorCode(new Error(`ENOENT: Lesson with id "${lessonId}" not found.`), 'ENOENT')
+      // }
+    }
+
+    if (Math.random() > 0.1) {
+      throw new Error('test')
+    }
     // lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
-    lessonMd = 'placeHolder for lessonMd'
+    lessonMd = `placeHolder for lessonMd for ${tutorial.id} ${lessonId} ${formattedId}}`
+    console.log(`lessonMd: `, lessonMd);
     lesson = {
       id: lessonId,
       formattedId: formattedId,
@@ -66,6 +85,12 @@ export function get (tutorial, lessonId) {
         new Error(`Data improperly formatted in the lesson markdown file "${lessonFilePrefix}.md". Check that the YAML syntax is correct.`)
       )
     }
+    console.log(error)
+    Object.keys(error).forEach(key => {
+      console.log(`error.${key}: `, error[key]);
+    })
+    console.log(`error.code: `, error.code);
+    throw error
   }
 
   return lesson
@@ -96,7 +121,7 @@ export default {
 `
   // writeFileSync(files.getJsPath(tutorial, lessonId), newFileContent)
   console.log('not writing file', files.getJsPath(tutorial, lessonId), newFileContent)
-  return get(tutorial, lessonId)
+  return getLesson(tutorial, lessonId)
 }
 
 /**
@@ -148,7 +173,7 @@ function create (tutorial, data) {
   // writeFileSync(files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
   console.log('not writing file', files.getMarkdownPath(tutorial, lessonId), lessonMarkdown)
 
-  return get(tutorial, lessonId)
+  return getLesson(tutorial, lessonId)
 }
 
 const files = {}
@@ -169,7 +194,7 @@ export default {
   getNextLessonId,
   getFormattedId,
   getId,
-  get,
+  getLesson,
   create,
   files,
   updateQuiz,

@@ -48,15 +48,15 @@
 </template>
 
 <script>
-// import BurgerIcon from '../../static/images/burger.svg'
-import CloseIcon from '../../static/images/close.svg'
+import BurgerIcon from '@/static/images/burger.svg'
+import CloseIcon from '@/static/images/close.svg'
 
-import { getTutorialByUrl } from '../../utils/tutorials'
+import { getTutorialByUrl } from '@/utils/tutorials'
 
 export default {
   name: 'Navigation',
   components: {
-    // BurgerIcon,
+    BurgerIcon,
     CloseIcon
   },
   props: {

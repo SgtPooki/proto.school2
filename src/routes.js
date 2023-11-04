@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { defineAsyncComponent } from 'vue'
-// import api from './api/index.js'
+import api from './api/index.js'
+
 import HomePage from './pages/Home.vue'
 import TutorialsPage from './pages/Tutorials.vue'
 import EventsPage from './pages/Events.vue'
@@ -82,27 +83,28 @@ function statics () {
 
 // Redirect routes
 // Redirects that need to return a 301 status code need to be configured in the server as well
-function redirects () {
+async function redirects () {
   // TODO Use API to get the tutorials (needs API to be universal)
   // https://github.com/ProtoSchool/protoschool.github.io/issues/589
+  const tutorialsList = await api.tutorials.list.get()
 
-  // const tutorialRedirects = Object.values(api.tutorials.list()).reduce((redirects, tutorial) => {
-  //   if (tutorial.redirectUrls && tutorial.redirectUrls.length) {
-  //     tutorial.redirectUrls.forEach(url => {
-  //       redirects.push({ path: `/${url}/`, redirect: `/${tutorial.url}` })
-  //       redirects.push({ path: `/${url}/resources/`, redirect: `/${tutorial.url}/resources/` })
+  const tutorialRedirects = Object.values(tutorialsList).reduce((redirects, tutorial) => {
+    if (tutorial.redirectUrls && tutorial.redirectUrls.length) {
+      tutorial.redirectUrls.forEach(url => {
+        redirects.push({ path: `/${url}/`, redirect: `/${tutorial.url}` })
+        redirects.push({ path: `/${url}/resources/`, redirect: `/${tutorial.url}/resources/` })
 
-  //       tutorial.lessons.forEach(lesson => {
-  //         redirects.push({ path: `/${url}/${lesson.formattedId}/`, redirect: `/${lesson.url}/` })
-  //       })
-  //     })
-  //   }
+        tutorial.lessons.forEach(lesson => {
+          redirects.push({ path: `/${url}/${lesson.formattedId}/`, redirect: `/${lesson.url}/` })
+        })
+      })
+    }
 
-  //   return redirects
-  // }, [])
+    return redirects
+  }, [])
 
   return [
-    // ...tutorialRedirects,
+    ...tutorialRedirects,
     { path: '/chapters/', redirect: '/events/' },
     { path: '/data-structures/', redirect: '/content-addressing/' },
     { path: '/data-structures/resources/', redirect: '/content-addressing/resources/' },
@@ -178,7 +180,7 @@ function all () {
     ...tutorials(),
     ...courses(),
     ...errors(),
-    ...redirects()
+    // ...redirects()
   ]
 }
 

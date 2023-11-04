@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     tutorial: function () {
-      // const tutorial = getTutorialByUrl(this.tutorialUrl)
+      const tutorial = getTutorialByUrl(this.tutorialUrl)
 
       // If no tutorial was found, redirect to 404 page
       if (!tutorial) {

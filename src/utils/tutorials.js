@@ -8,7 +8,8 @@ import tutorialsJson from '../static/tutorials.json'
 // Load data from the window variable
 // This supports data overriding and custom SSR
 // const tutorialsJson = require('../static/tutorials.json')
-const tutorials = (window.__DATA__ && window.__DATA__.tutorials) || tutorialsJson
+// const tutorials = (window.__DATA__ && window.__DATA__.tutorials) || tutorialsJson
+const tutorials = tutorialsJson
 
 // SET CASING OVERRIDES HERE
 // If a word in a URL would not be appropriate if only the first letter were capitalized,
