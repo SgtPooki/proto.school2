@@ -1,4 +1,4 @@
-import shallowEqualArrays from 'shallow-equal/arrays'
+import {shallowEqualArrays} from 'shallow-equal'
 
 import utils from './utils.js'
 

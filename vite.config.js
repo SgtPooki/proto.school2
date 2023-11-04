@@ -18,6 +18,7 @@ export default defineConfig({
     svgLoader(),
   ],
   build: {
+    target: 'esnext',
     rollupOptions: {
       external: [
         'fs',
