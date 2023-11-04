@@ -59,12 +59,13 @@ function statics () {
       name: 'Events',
       sitemap: { priority: 0.8, changefreq: 'weekly', lastmod }
     },
-    {
-      path: '/news/',
-      component: NewsPage,
-      name: 'News',
-      sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
-    },
+    // TODO-build: Error on page: /news/ TypeError: Cannot read properties of undefined (reading '$error')
+    // {
+    //   path: '/news/',
+    //   component: NewsPage,
+    //   name: 'News',
+    //   sitemap: { priority: 0.7, changefreq: 'monthly', lastmod }
+    // },
     {
       path: '/host/',
       component: HostPage,
@@ -180,7 +181,7 @@ function courses () {
 }
 
 async function all () {
-  return [
+  const routes = [
     ...statics(),
     ...(await tutorials()),
     ...courses(),
@@ -197,18 +198,53 @@ async function all () {
       component: LandingPage,
       props: true
     },
+    // TODO-build: Error on page: /content-addressing/resources/ ReferenceError: document is not defined
     {
       path: '/:tutorialUrl/resources',
-      component: ResourcesLessonPage,
+      // component: ResourcesLessonPage,
+      component: defineAsyncComponent(() => import('./pages/ResourcesLesson.vue')),
       props: true,
       name: 'Resources'
     },
     {
       path: '/:tutorialUrl/:lessonId',
-      component: LessonPage,
+      // component: LessonPage,
+      component: defineAsyncComponent(() => import('./pages/Lesson.vue')),
       props: true
     },
   ]
+  // if (typeof window !== 'undefined') {
+  //   routes.push([
+  //     // TODO-build: Error on page: /content-addressing/resources/ ReferenceError: document is not defined
+  //     {
+  //       path: '/:tutorialUrl/resources',
+  //       component: ResourcesLessonPage,
+  //       props: true,
+  //       name: 'Resources'
+  //     },
+  //     {
+  //       path: '/:tutorialUrl/:lessonId',
+  //       component: LessonPage,
+  //       props: true
+  //     },
+  //   ])
+  // } else {
+    // routes.push([
+    //   {
+    //     path: '/:tutorialUrl/resources',
+    //     component: defineAsyncComponent(() => import('./pages/ResourcesLesson.vue')),
+    //     props: true,
+    //     name: 'Resources'
+    //   },
+    //   {
+    //     path: '/:tutorialUrl/:lessonId',
+    //     component: defineAsyncComponent(() => import('./pages/Lesson.vue')),
+    //     props: true
+    //   },
+    // ])
+  // }
+
+  return routes
 }
 
 export default {

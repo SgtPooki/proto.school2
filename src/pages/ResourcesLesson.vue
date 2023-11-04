@@ -35,6 +35,7 @@ export default {
     }
   },
   head () {
+    console.log('resourcesLesson.vue head')
     return this.tutorial && head.dynamic.resources({ context: this })
   }
 }

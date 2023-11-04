@@ -3,7 +3,13 @@ import 'tachyons'
 import 'ipfs-css'
 
 import VueMeta from 'vue-meta'
-import VueTooltip from 'v-tooltip'
+// import VueTooltip from 'v-tooltip'
+import {default as VueTooltip, VTooltip} from 'floating-vue'
+console.log(`VTooltip: `, VTooltip);
+
+console.log(`VueTooltip: `, VueTooltip);
+console.log(`VueTooltip.default: `, VueTooltip.default);
+console.log(`VueTooltip.VTooltip: `, VueTooltip.VTooltip);
 import PortalVue from 'portal-vue'
 // import * as hljsVuePluginMod from "@highlightjs/vue-plugin";
 import VueSelect from 'vue-select/es'
@@ -55,72 +61,73 @@ const allRoutes = await routes.all()
 // console.log(`allRoutes: `, allRoutes);
 
 // console.log(tutorialFolders)
+
+// hack to get around build failure that 'localStorage' is not defined.. it's used everywhere without guards for SSG.
+if (typeof localStorage === 'undefined') {
+  globalThis.window = globalThis.window ?? {
+    location: {pathname: ''},
+    history: {state: {}},
+    addEventListener: () => {},
+  }
+  globalThis.document = globalThis.document ?? {
+    referrer: '',
+    window: globalThis.window,
+  }
+  globalThis.localStorage = globalThis.localStorage ?? {}
+}
 export const createApp = ViteSSG(
   App,
-  { routes: allRoutes },
-  async ({app, initialState, router}) => {
-    // console.log(`isClient: `, isClient);
-    // console.log('import.meta.env.SSR', import.meta.env.SSR)
+  { routes: allRoutes, base: '/' },
+  async ({app, initialState, router, isClient}) => {
+  //   // eslint-disable-next-line no-debugger
+  //   debugger;
+  //   console.log(`isClient: `, isClient);
+  //   console.log('import.meta.env.SSR', import.meta.env.SSR)
 
-    // const fs = await import('node:fs')
-    // // import fs from 'node:fs'
-    // const path = (await import('node:path')).default
-    // // import path from 'node:path'
+  //   if (import.meta.env.SSR && !isClient) {
+  //     await router.isReady()
+  //   }
+  //   if (import.meta.env.SSR) {
 
-    // // get all directory names in the tutorials folder
-    // const tutorialsPath = path.resolve('src', 'tutorials')
-    // const tutorialFolders = fs.readdirSync(tutorialsPath, { withFileTypes: true })
-    //   .filter(dirent => dirent.isDirectory())
-    //   .map(dirent => dirent.name)
-    // console.log(`tutorialFolders: `, tutorialFolders);
-    // const routerMod = await import('./router.js')
-    // const router = routerMod.router
-    // console.log(`routes: `, routes);
-      // console.log('router.getRoutes():', router.getRoutes())
-      // await router.addRoutes?.(allRoutes)
-      // router.addRoute(allRoutes)
 
-      // router.replace(router.currentRoute.value.fullPath)
-      // console.log('router.getRoutes():', router.getRoutes())
-    if (import.meta.env.SSR) {
-      await router.isReady()
-      // Set initial state during server side
-      // initialState = {...stateInit()}
-      initialState.data = await stateInit()
-      // await loadTutorials()
-      // const tutorialRedirects = await ssgOnly.redirects()
-      // console.log(`tutorialRedirects: `, tutorialRedirects);
-      // await router.addRoutes(tutorialRedirects)
-      // router.replace(router.currentRoute.value.fullPath)
+  //     // Set initial state during server side
+  //     // initialState = {...stateInit()}
+  //     initialState.data = await stateInit()
+  //     // await loadTutorials()
+  //     // const tutorialRedirects = await ssgOnly.redirects()
+  //     // console.log(`tutorialRedirects: `, tutorialRedirects);
+  //     // await router.addRoutes(tutorialRedirects)
+  //     // router.replace(router.currentRoute.value.fullPath)
 
-    } else {
+  //   } else {
 
-      // initialState = {...stateInit()}
-      // Restore or read the initial state on the client side in the browser
-      console.log(initialState.data) // => { cats: 2, dogs: 3 }
-      console.log(`initialState: `, initialState);
-    }
+  //     // initialState = {...stateInit()}
+  //     // Restore or read the initial state on the client side in the browser
+  //     console.log(initialState.data) // => { cats: 2, dogs: 3 }
+  //     console.log(`initialState: `, initialState);
+  //   }
+    app.directive('tooltip', VueTooltip)
 
     app
-      // .use(router)
-      // .use(VueMeta, { keyName: 'head', refreshOnceOnNavigation: true })
-      // .use(hljsVuePlugin)
-      .use(VueTooltip)
+  //     // .use(router)
+  //     // .use(VueMeta, { keyName: 'head', refreshOnceOnNavigation: true })
+  //     // .use(hljsVuePlugin)
+      // .use(VueTooltip)
       .use(PortalVue)
 
 
     app.component('v-select', VueSelect)
 
-    app.config.productionTip = false
-    app.config.errorHandler = (error, vm, info) => {
-      console.error(error)
-      console.info(vm)
-      console.info(info)
-    }
+  //   app.config.productionTip = false
+  //   app.config.errorHandler = (error, vm, info) => {
+  //     console.error(error)
+  //     console.info(vm)
+  //     console.info(info)
+  //   }
 
-    // app.mount('#app')
+  //   // app.mount('#app')
   },
-  { rootContainer: '#app'}
+  // { rootContainer: '#app'}
   // async ({router}) => {
   //   await router.isReady()
   // }

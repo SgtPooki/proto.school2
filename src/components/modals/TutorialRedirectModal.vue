@@ -85,10 +85,10 @@ export default {
 
     const conditionstoShow = [
       {
-        show: typeof document !== 'undefined' && !!document.referrer,
+        show: typeof document !== 'undefined' && typeof document !== 'undefined' && !!document.referrer,
         log: `referrer is not defined: document.referrer=${document.referrer}` },
       {
-        show: tutorialRedirectModal.referrer.SEARCH_ENGINES.some(searchEngine => document.referrer.includes(searchEngine.url)),
+        show: tutorialRedirectModal.referrer.SEARCH_ENGINES.some(searchEngine => typeof document !== 'undefined' && document.referrer.includes(searchEngine.url)),
         log: 'referrer isn\'t one of the configured search engines'
       },
       {

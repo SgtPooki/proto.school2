@@ -18,6 +18,13 @@ export default {
     this.defaultCode = defaultCode
   },
   mounted: function () {
+    if (!process.browser) {
+      return
+    }
+    if (typeof document === 'undefined') {
+      return
+    }
+
     let elem = document.querySelector('input#file')
     elem.onchange = () => {
       this.onFiles(Array.from(elem.files))
@@ -40,10 +47,16 @@ export default {
     onFileClick: function (event) {
       event.preventDefault()
       event.stopPropagation()
+      if (typeof document === 'undefined') {
+        return
+      }
       let elem = document.querySelector('input#file')
       elem.click()
     },
     onFilesReset: function () {
+      if (typeof document === 'undefined') {
+        return
+      }
       let elem = document.querySelector('input#file')
       elem.value = ''
       delete elem.files

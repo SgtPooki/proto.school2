@@ -26,9 +26,9 @@ export default function headRoot () {
     changed (newInfo) {
       clearTimeout(window.__APP_RENDERED_TIMEOUT__)
 
-      window.__APP_RENDERED_TIMEOUT__ = setTimeout(() => {
-        document.dispatchEvent(new Event('x-app-rendered'))
-      }, 200)
+      // window.__APP_RENDERED_TIMEOUT__ = setTimeout(() => {
+      //   document.dispatchEvent(new Event('x-app-rendered'))
+      // }, 200)
     }
   }
 }

@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     errorMessage: function () {
-      if (this.required && !this.input.required) {
+      if (this.required && !this.input?.required) {
         return 'Field is required.'
       }
 

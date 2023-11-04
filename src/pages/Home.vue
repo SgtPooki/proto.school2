@@ -94,6 +94,12 @@ import { futureEvents } from '../utils/events.js'
 import { getAll } from '../utils/projects.js'
 import { getCourseNames, getTutorialCount } from '../utils/courses.js'
 
+// const getCourseNames = () => {
+//   return coursesList.courses.map(course => course.id)
+// }
+// const getTutorialCount = (courseId) => {
+//   return coursesList.courses.find(course => course.id === courseId).tutorials.length
+// }
 export default {
   name: 'Home',
   displayName: 'Home',
@@ -104,6 +110,9 @@ export default {
     EventCard,
     ButtonLink,
     ProjectIcon
+  },
+  directives: {
+    'tooltip': '../directives/tooltip.js'
   },
   data: self => {
     return {

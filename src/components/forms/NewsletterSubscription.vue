@@ -39,9 +39,9 @@
               required
               type="email"
               name="email"
-              :error="$v.$error && $v.data.emailAddress.$invalid"
+              :error="$v?.$error && $v.data.emailAddress.$invalid"
               customErrorMessage="Please enter a valid email address."
-              :input="$v.data.emailAddress"
+              :input="$v?.data.emailAddress"
               :onBlur="onBlur"
               :disabled="state.type === states.PENDING"
             />
@@ -79,7 +79,7 @@
 // import { validationMixin } from 'vuelidate'
 import { useVuelidate } from '@vuelidate/core'
 
-import { required, minLength } from '@vuelidate/validators'
+import { required, minLength, email } from '@vuelidate/validators'
 import qs from 'querystringify'
 
 import config from '../../config'
@@ -189,14 +189,14 @@ export default {
       this.$v.$reset()
     }
   },
-  // validations: {
-  //   data: {
-  //     emailAddress: {
-  //       required,
-  //       email
-  //     }
-  //   }
-  // }
+  validations: {
+    data: {
+      emailAddress: {
+        required,
+        email,
+      }
+    }
+  }
 }
 </script>
 <style scoped>

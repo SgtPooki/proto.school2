@@ -52,9 +52,15 @@ export default defineConfig({
   resolve: {
     alias: {
       // 'monaco-editor/esm/vs/editor/editor.api': `${monacoPrefix}/editor/editor.worker.js`,
+
+      'v-tooltip': 'v-tooltip/dist/v-tooltip.esm.js',
       'vue-select/es': 'node_modules/vue-select/dist/vue-select.es.js',
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
 
+  },
+  ssgOptions: {
+    script: 'async',
+    formatting: 'prettify',
   },
 })

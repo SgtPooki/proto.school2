@@ -66,6 +66,7 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
     const lessonMdRaw = await getTutorialImport(`${lessonFilePrefix}.md`)
     lessonMd = marked(lessonMdRaw)
 
+    console.log(`${lessonFilePrefix} lessonMd.meta: `, lessonMd.meta);
     lesson = {
       id: lessonNumber,
       formattedId,
@@ -88,7 +89,7 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
     // throw error
   }
 
-  if (lesson.type !== 'text') {
+  if (lesson.type != null && lesson.type !== 'text') {
     try {
       lesson.logic = await getTutorialImport(`${lessonFilePrefix}.js`)
     } catch (error) {
