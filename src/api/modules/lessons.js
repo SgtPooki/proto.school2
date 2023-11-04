@@ -6,7 +6,7 @@ import marked from 'meta-marked'
 import log from '../logger'
 import debug from '../debug'
 import { boilerplates } from '../config'
-import {getTutorialImport} from '../../utils/tutorials-helper.js'
+import { getTutorialImport, getRealPathForTutorialImport } from '../../utils/tutorials-helper.js'
 
 const logGroup = log.createLogGroup('lessons')
 
@@ -25,10 +25,8 @@ function getNextLessonId (tutorial) {
 }
 
 export async function getLesson (tutorial, lessonId) {
-  console.log('getLesson')
   const formattedId = getFormattedId(lessonId)
   const lessonFilePrefix = `${tutorial.folderName}/${formattedId}`
-  console.log(`lessonFilePrefix: `, lessonFilePrefix);
 
   let lessonMd
   let lesson
@@ -36,28 +34,7 @@ export async function getLesson (tutorial, lessonId) {
   debug && log.debug(logGroup('get'), tutorial.id, lessonId, formattedId)
 
   try {
-    const mdPath = files.getMarkdownPath(tutorial, lessonId)
-    console.log(`mdPath: `, mdPath);
-    // const testLessonMd = import.meta.glob(`@/tutorials/${lessonFilePrefix}.md`)
-    try {
-
-    lessonMd = await import(/* @vite-ignore */ mdPath)
-    console.log(`lessonMd: `, lessonMd);
-    // console.log(`testLessonMd: `, testLessonMd);
-    } catch (err) {
-      // throw ENOENT error if file not found
-      // if (err.code === 'ENOENT') {
-        throw errorCode(new Error(`ENOENT: Lesson with id "${lessonId}" not found.`), 'ENOENT')
-      // }
-    }
-
-    if (Math.random() > 0.1) {
-      throw new Error('test')
-    }
-    // lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
-    // lessonMd = `placeHolder for lessonMd for ${tutorial.id} ${lessonId} ${formattedId}}`
     lessonMd = await getTutorialImport(`${lessonFilePrefix}.md`)
-    console.log(`lessonMd: `, lessonMd);
     lesson = {
       id: lessonId,
       formattedId: formattedId,
@@ -67,19 +44,20 @@ export async function getLesson (tutorial, lessonId) {
     }
 
     lesson.files = {
-      markdown: files.getMarkdownPath(tutorial, lessonId)
+      markdown: getRealPathForTutorialImport(`${lessonFilePrefix}.md`)
     }
 
     if (lesson.type !== 'text') {
-      lesson.files.js = files.getJsPath(tutorial, lessonId)
+
+      lesson.files.js = getRealPathForTutorialImport(`${lessonFilePrefix}.js`)
 
       if (lesson.type !== 'multiple-choice') {
-        lesson.files.challengeMarkdown = files.getChallengeMarkdownPath(tutorial, lessonId)
+        lesson.files.challengeMarkdown = getRealPathForTutorialImport(`${lessonFilePrefix}-challenge.md`)
       }
     }
   } catch (error) {
     // lesson not found, we reached the end
-    if (error.code === 'ENOENT') {
+    if (error.code === 'ENOENT' || error.code === 'MODULE_NOT_FOUND') {
       throw errorCode(new Error(`NOT FOUND: Lesson with id "${lessonId}" not found.`), 'NOT_FOUND')
     }
 
@@ -174,19 +152,19 @@ function create (tutorial, data) {
   return getLesson(tutorial, lessonId)
 }
 
-const files = {}
+// const files = {}
 
-files.getMarkdownPath = (tutorial, lessonId) => (
-  `${tutorial.fullPath}/${getFormattedId(lessonId)}.md`
-)
+// files.getMarkdownPath = (tutorial, lessonId) => (
+//   `${tutorial.fullPath}/${getFormattedId(lessonId)}.md`
+// )
 
-files.getJsPath = (tutorial, lessonId) => (
-  `${tutorial.fullPath}/${getFormattedId(lessonId)}.js`
-)
+// files.getJsPath = (tutorial, lessonId) => (
+//   `${tutorial.fullPath}/${getFormattedId(lessonId)}.js`
+// )
 
-files.getChallengeMarkdownPath = (tutorial, lessonId) => (
-  `${tutorial.fullPath}/${getFormattedId(lessonId)}-challenge.md`
-)
+// files.getChallengeMarkdownPath = (tutorial, lessonId) => (
+//   `${tutorial.fullPath}/${getFormattedId(lessonId)}-challenge.md`
+// )
 
 export default {
   getNextLessonId,
@@ -194,7 +172,7 @@ export default {
   getId,
   getLesson,
   create,
-  files,
+  // files,
   updateQuiz,
   isQuizPristine
 }

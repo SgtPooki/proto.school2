@@ -2,6 +2,18 @@ import errorCode from 'err-code'
 
 const tutorialsImports = import.meta.glob('@/tutorials/[0-9]*/**')
 
+export function getRealPathForTutorialImport(path) {
+
+  const key = Object.keys(tutorialsImports).find((key) => {
+    return key.includes(path)
+  })
+
+  if (key == null) {
+    throw errorCode(new Error(`NOT FOUND: "${path}" not found.`), 'MODULE_NOT_FOUND')
+  }
+
+  return key;
+}
 export async function getTutorialImport(path) {
   if (import.meta.env.SSR) {
     console.log('SSR MODE')

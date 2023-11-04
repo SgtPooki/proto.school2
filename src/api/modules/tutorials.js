@@ -43,7 +43,6 @@ function getId (formattedId) {
  * @returns Final tutorial data
  */
 async function getProcessedTutorial (id) {
-  console.log(`getProcessedTutorial id: `, id);
   const tutorialsJson = list.getJson()
   let tutorialId = id
 
@@ -51,9 +50,7 @@ async function getProcessedTutorial (id) {
     tutorialId = findKey(tutorialsJson, tutorial => tutorial.url === id.url)
   }
 
-  console.log(`tutorialId: `, tutorialId);
   const formattedId = getFormattedId(tutorialId)
-  console.log(`formattedId: `, formattedId);
 
   if (!tutorialsJson[formattedId]) {
     throw errorCode(new Error(`NOT FOUND: Tutorial with id ${id} not found.`), 'NOT_FOUND')
@@ -67,8 +64,9 @@ async function getProcessedTutorial (id) {
   tutorial.shortTitle = deriveShortname(tutorial.url)
   tutorial.folderName = `${tutorial.formattedId}-${tutorial.url}`
   // tutorial.fullPath = resolve(`${tutorialsPath}/${tutorial.folderName}`)
-  tutorial.fullPath = `${tutorialsPath}/${tutorial.folderName}`
-  console.log('${tutorialsPath}/${tutorial.folderName}:', `${tutorialsPath}/${tutorial.folderName}`);
+  // TODO: migrate to import.meta.glob
+  tutorial.fullPath = `../../tutorials/${tutorial.folderName}`
+  // console.log('tutorial.fullPath', tutorial.fullPath)
   tutorial.lessons = await getLessons(tutorial)
   tutorial.project = await getProject(tutorial.project)
 
@@ -106,7 +104,6 @@ async function getLessons (tutorial, lessons = [], lessonId = 1) {
   }
 
   lessons.push(lesson)
-  console.log('calling getLessons again', lessonId + 1)
 
   return getLessons(tutorial, lessons, lessonId + 1)
 }
@@ -117,10 +114,10 @@ function getFolderName (id, url) {
   return `${getFormattedId(id)}-${urlSuffix}`
 }
 
-function getFullPath (id, url) {
-  // return resolve(tutorialsPath, getFolderName(id, url))
-  return `${tutorialsPath}/${getFolderName(id, url)}`
-}
+// function getFullPath (id, url) {
+//   // return resolve(tutorialsPath, getFolderName(id, url))
+//   return `${tutorialsPath}/${getFolderName(id, url)}`
+// }
 
 /**
  * Creates a new tutorial.
@@ -197,7 +194,6 @@ list.get = async function listGet () {
   const tutorials = {}
 
   for (let id in tutorialsJson) {
-    console.log(`listGet tutorialsJson[id]: `, tutorialsJson[id]);
     tutorials[id] = await getProcessedTutorial(id)
   }
 
@@ -228,7 +224,7 @@ export default {
   getProcessedTutorial,
   getByUrl,
   getFolderName,
-  getFullPath,
+  // getFullPath,
   getLessons,
   getNextTutorialId,
   // create,

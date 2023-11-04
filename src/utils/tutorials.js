@@ -59,8 +59,6 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
   const formattedId = lessonNumber.toString().padStart(2, 0)
   const lessonFilePrefix = `${tutorial.formattedId}-${tutorial.url}/${formattedId}`
 
-  // const importPath = `../tutorials/${lessonFilePrefix}.md`
-
   let lessonMd
   let lesson
 
@@ -91,14 +89,9 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
   }
 
   if (lesson.type !== 'text') {
-    console.log('lesson.type', lesson.type)
     try {
-      const lessonMod = await getTutorialImport(`${lessonFilePrefix}.js`)
-      // const lessonMod = await import(`/src/tutorials/${lessonFilePrefix}.js`)
-      lesson.logic = lessonMod
+      lesson.logic = await getTutorialImport(`${lessonFilePrefix}.js`)
     } catch (error) {
-      console.log(`error: `, error);
-      console.log(`error.code: `, error.code);
       if (error.code === 'MODULE_NOT_FOUND' || error.code === 'ERR_MODULE_NOT_FOUND') {
         console.error(
           new Error(`You are missing the file "${lessonFilePrefix}.js" required for lessons of type ${lesson.type}.`)
