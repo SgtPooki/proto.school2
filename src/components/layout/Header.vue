@@ -17,6 +17,7 @@
           </div>
         </div>
       </section>
+      <HeliaMigrationBanner />
       <Navigation :hidden="hidden"/>
     </header>
   </div>
@@ -24,13 +25,15 @@
 
 <script>
 import ProtoSchoolLogo from '@/static/images/ps_symbol_color.svg'
+import HeliaMigrationBanner from './HeliaMigrationBanner.vue';
 
 import Navigation from './Navigation.vue'
 export default {
   name: 'Header',
   components: {
     ProtoSchoolLogo,
-    Navigation
+    Navigation,
+    HeliaMigrationBanner
   },
   props: {
     notFound: Boolean,
