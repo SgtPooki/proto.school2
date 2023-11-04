@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { debug } from '../utils/debug'
+// import { debug } from '../utils/debug'
 import head from '../utils/head'
 import { getTutorialByUrl } from '../utils/tutorials'
 import marked from '../utils/marked'
@@ -50,6 +50,7 @@ import Lesson from '../components/Lesson.vue'
 import FileLesson from '../components/FileLesson.vue'
 import MultipleChoiceLesson from '../components/MultipleChoiceLesson.vue'
 import dynamicMdImport from '../utils/dynamicMdImport'
+import { ref, onMounted } from 'vue'
 
 export default {
   components: {
@@ -61,83 +62,37 @@ export default {
     tutorialUrl: String,
     lessonId: String
   },
-  methods: {
-    loadFile: async function (file, { failOnNotFound = true } = {}) {
-      let filename
-      let fileData
+  setup: (props) => {
+    const tutorial = getTutorialByUrl(props.tutorialUrl)
+    const loadedFiles = ref({})
 
-      if (!this.tutorial) {
-        return null
-      }
-
-      switch (file) {
-        case 'concepts':
-          filename = `${this.lessonId}-concepts.md`
-          break
-        case 'challenge':
-          filename = `${this.lessonId}-challenge.md`
-          break
-        case 'js':
-          filename = `${this.lessonId}.js`
-          break
-        case 'md':
-        default:
-          filename = `${this.lessonId}.md`
-      }
-
+    if (tutorial == null) {
+      this.$router.replace({ name: '404' })
+    }
+    onMounted(async () => {
+      const newLoadedFilesValue = {}
       try {
-        const fileDataPath = `../tutorials/${this.tutorial.formattedId}-${this.tutorial.url}/${filename}`
-        console.log('trying to load file data at path', fileDataPath)
-        // fileData = require(fileDataPath)
-        if (/.md$/.test(fileDataPath)) {
-          fileData = await dynamicMdImport(fileDataPath)
-        } else {
-          fileData = await import(fileDataPath)
-          console.log('file data', fileData)
-        }
-        // fileData = await dynamicMdImport(fileDataPath)
-      } catch (error) {
-        const errorMessage = `File "${filename}" not found`
-
-        if (failOnNotFound) {
-          console.error(errorMessage)
-          console.error(error)
-        } else if (debug) {
-          // Only log in debug mode since not all files are mandatory
-          console.warn(errorMessage)
-        }
-
-        // If no markdown file for the lesson was found, then lesson does not exist
-        // redirect to 404 page
-        if (file === 'md') {
-          this.$router.replace({ name: '404' })
-        }
-
-        if (failOnNotFound) {
-          throw error
-        }
-      }
-
-      return fileData
+        newLoadedFilesValue.md = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}.md`)
+      } catch {}
+      try {
+        newLoadedFilesValue.concepts = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}-concepts.md`)
+      } catch {}
+      try {
+        newLoadedFilesValue.challenge = await dynamicMdImport(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}-challenge.md`)
+      } catch {}
+      try {
+        newLoadedFilesValue.js = await import(`../tutorials/${tutorial.formattedId}-${tutorial.url}/${props.lessonId}.js`)
+      } catch {}
+      loadedFiles.value = newLoadedFilesValue
+    })
+    return {
+      tutorial,
+      loadedFiles
     }
   },
   computed: {
-    tutorial: function () {
-      const tutorial = getTutorialByUrl(this.tutorialUrl)
-
-      // If no tutorial was found, redirect to 404 page
-      if (!tutorial) {
-        this.$router.replace({ name: '404' })
-
-        return null
-      }
-
-      return tutorial
-    },
-    lesson: async function () {
-      // console.log('lesson computed', this)
-      const lesson = this.tutorial && marked(await this.loadFile('md'))
-      console.log('lesson computed lesson:', lesson)
+    lesson: function () {
+      const lesson = this.loadedFiles['md'] && marked(this.loadedFiles['md'])
       return lesson
     },
     lessonNeedsJsFile: function () {
@@ -149,22 +104,15 @@ export default {
         this.lesson.meta?.type === 'file-upload'
       )
     },
-    concepts: async function () {
-      const concepts = await this.loadFile('concepts', { failOnNotFound: false })
-      console.log('concepts', concepts)
+    concepts: function () {
+      const concepts = this.loadedFiles['concepts']
 
       return concepts ? marked(concepts).html : ''
     },
-    challenge: async function () {
-      const challenge = this.lessonNeedsChallengeFile && await this.loadFile('challenge')
+    challenge: function () {
+      const challenge = this.lessonNeedsChallengeFile && this.loadedFiles['challenge']
 
       return challenge ? marked(challenge).html : ''
-    },
-    created: function () {
-      console.log('created Lesson.vue', this)
-      // if (this.tutorial && this.lesson) {
-      //   countly.trackLessonView(this.tutorial, this.lesson)
-      // }
     },
     logic: function () {
       let logic = {
@@ -179,7 +127,7 @@ export default {
         return logic
       }
 
-      let fileLogic = this.loadFile('js')
+      let fileLogic = this.loadedFiles['js']
 
       logic = {
         ...logic,

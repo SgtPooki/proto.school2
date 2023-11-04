@@ -42,7 +42,7 @@
 <script>
 import CompleteIcon from '../static/images/complete.svg'
 
-import countly from '../utils/countly'
+// import countly from '../utils/countly'
 import MonacoEditor from 'monaco-editor-vue'
 
 export default {
@@ -86,7 +86,7 @@ export default {
       this.viewSolution = !this.viewSolution
 
       if (this.viewSolution) {
-        countly.trackEvent(countly.events.CODE_VIEW_SOLUTION, this.trackingData)
+        // countly.trackEvent(countly.events.CODE_VIEW_SOLUTION, this.trackingData)
       }
     }
   },

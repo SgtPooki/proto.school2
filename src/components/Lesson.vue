@@ -144,7 +144,7 @@ import {
   isLessonPassed,
   getTutorialType
 } from '../utils/tutorials'
-import countly from '../utils/countly'
+// import countly from '../utils/countly'
 import marked from '../utils/marked'
 import Header from './layout/Header.vue'
 import Footer from './layout/Footer.vue'
@@ -451,7 +451,7 @@ export default {
         setLessonPassed(this.tutorial, this.lesson)
         if (auto !== true) {
           // track lesson passed if it has a challenge (incl file ones)
-          countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
+          // // countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
           this.updateTutorialState()
         }
       } else {
@@ -460,7 +460,7 @@ export default {
         }
         this.clearPassed()
         if (auto !== true) {
-          countly.trackEvent(countly.events.CODE_SUBMIT_WRONG, this.trackingData)
+          // // countly.trackEvent(countly.events.CODE_SUBMIT_WRONG, this.trackingData)
         }
       }
       this.lessonPassed = !!localStorage[this.lessonKey]
@@ -510,7 +510,7 @@ export default {
       this.clearPassed()
       delete this.output.test
       this.showUploadInfo = false
-      countly.trackEvent(countly.events.CODE_RESET, this.trackingData)
+      // // countly.trackEvent(countly.events.CODE_RESET, this.trackingData)
     },
     resetFileUpload: function () {
       this.uploadedFiles = []
@@ -537,11 +537,11 @@ export default {
       }
 
       setTutorialPassed(this.tutorial)
-      countly.trackEventOnce(countly.events.TUTORIAL_PASSED, {
-        tutorial: this.trackingData.tutorial,
-        tutorialType: this.trackingData.tutorialType,
-        project: this.trackingData.project
-      })
+      // // countly.trackEventOnce(countly.events.TUTORIAL_PASSED, {
+      //   tutorial: this.trackingData.tutorial,
+      //   tutorialType: this.trackingData.tutorialType,
+      //   project: this.trackingData.project
+      // })
 
       return true
     },
@@ -589,13 +589,13 @@ export default {
         this.lessonPassed = !!localStorage[this.lessonKey]
         if (result.auto !== true) {
           // track multiple choice lesson passed if not on page load
-          countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
+          // // countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
           this.updateTutorialState()
         }
       } else {
         this.clearPassed()
         if (result.auto !== true) {
-          countly.trackEventOnce(countly.events.CHOICE_SUBMIT_WRONG, { ...this.trackingData, wrongChoice: result.selected })
+          // // countly.trackEventOnce(countly.events.CHOICE_SUBMIT_WRONG, { ...this.trackingData, wrongChoice: result.selected })
         }
       }
     },
@@ -608,7 +608,7 @@ export default {
         setLessonPassed(this.tutorial, this.lesson)
         // track passed lesson if text only
         if (!this.isMultipleChoiceLesson) {
-          countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
+          // // countly.trackEventOnce(countly.events.LESSON_PASSED, this.trackingData)
           this.updateTutorialState()
         }
       }

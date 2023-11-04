@@ -52,10 +52,10 @@ export const router = new createRouter({
 })
 
 // track page view via Countly when route changes
-router.afterEach((to) => {
-  if (!window.Countly) return
-  window.Countly.q.push(['track_pageview', to.path])
-})
+// router.afterEach((to) => {
+//   if (!window.Countly) return
+//   window.Countly.q.push(['track_pageview', to.path])
+// })
 
 // To be used in the onError handler
 let nextRoute = null
