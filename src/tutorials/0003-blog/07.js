@@ -1,5 +1,5 @@
 import shallowEqualArrays from 'shallow-equal/arrays'
-import CID from 'cids'
+import {CID} from 'multiformats/cid'
 
 const validate = async (result, ipfs) => {
   if (!result) {

@@ -1,6 +1,6 @@
 'use strict'
 
-import CID from 'cids'
+import {CID} from 'multiformats/cid'
 
 // Stringify JSON with space in between
 const stringify = (json) => JSON.stringify(json, null, ' ').replace('\n', '')
