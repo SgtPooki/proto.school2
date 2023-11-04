@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { defineAsyncComponent } from 'vue'
+// import { defineAsyncComponent } from 'vue'
+import dynamicMdImport from './dynamicMdImport.js'
 
 import marked from './marked'
 import projects from './projects'
@@ -41,7 +42,7 @@ for (const tutorialId in tutorials) {
   tutorials[tutorialId].formattedId = tutorialId
   tutorials[tutorialId].id = parseInt(tutorialId, 10)
   tutorials[tutorialId].shortTitle = deriveShortname(tutorials[tutorialId].url)
-  tutorials[tutorialId].lessons = defineAsyncComponent(() => getTutorialLessons(tutorials[tutorialId]))
+  tutorials[tutorialId].lessons = await getTutorialLessons(tutorials[tutorialId])
   tutorials[tutorialId].project = projects.get(tutorials[tutorialId].project)
   tutorials[tutorialId].newMessage = tutorials[tutorialId].newMessage
     ? marked(tutorials[tutorialId].newMessage).html.replace('<p>', '').replace('</p>', '')
@@ -57,12 +58,13 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
   const formattedId = lessonNumber.toString().padStart(2, 0)
   const lessonFilePrefix = `${tutorial.formattedId}-${tutorial.url}/${formattedId}`
 
+  const importPath = `../tutorials/${lessonFilePrefix}.md`
+
   let lessonMd
   let lesson
 
   try {
-    const lessonMdRaw = await import(`../tutorials/${lessonFilePrefix}.md`)
-    console.log(`lessonMdRaw: `, lessonMdRaw);
+    const lessonMdRaw = await dynamicMdImport(importPath)
     lessonMd = marked(lessonMdRaw)
 
     lesson = {
@@ -89,9 +91,8 @@ export async function getTutorialLessons (tutorial, lessons = [], lessonNumber =
 
   if (lesson.type !== 'text') {
     try {
-      const { default: lessonJs } = await import(`../tutorials/${lessonFilePrefix}.js`)
-      // lesson.logic = require(`../tutorials/${lessonFilePrefix}.js`).default
-      lesson.logic = lessonJs
+      const lessonMod = await import(`/src/tutorials/${lessonFilePrefix}.js`)
+      lesson.logic = lessonMod.default
     } catch (error) {
       if (error.code === 'MODULE_NOT_FOUND') {
         console.error(
