@@ -87,6 +87,7 @@ async function redirects () {
   // TODO Use API to get the tutorials (needs API to be universal)
   // https://github.com/ProtoSchool/protoschool.github.io/issues/589
   const tutorialsList = await api.tutorials.list.get()
+  console.log(`tutorialsList: `, tutorialsList);
 
   const tutorialRedirects = Object.values(tutorialsList).reduce((redirects, tutorial) => {
     if (tutorial.redirectUrls && tutorial.redirectUrls.length) {

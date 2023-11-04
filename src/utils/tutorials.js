@@ -126,6 +126,9 @@ export function getLesson (tutorialId, lessonId) {
     // get lesson object from tutorials.json
     lesson = tutorials[tutorialId].lessons[(parseInt(lessonId, 10) - 1)]
   }
+  // if (lesson == null) {
+  //   console.trace('Lesson not found', tutorialId, lessonId)
+  // }
 
   // add more useful properties to it // BUT MAKE SURE THEY WORK FOR RESOURCES PAGE
   // lesson.path = `/${getTutorial(route).url}/${route.props.default.lessonId}`
@@ -234,7 +237,8 @@ export function getLessonType (tutorialId, lessonId) {
   if (lessonId === 'resources') {
     return 'resources'
   }
-  return getLesson(tutorialId, lessonId).type
+  // TODO: Fix fallback.. .type is failing for some reason
+  return getLesson(tutorialId, lessonId)?.type ?? 'unknown'
 }
 
 export function setLessonPassed (tutorial, lesson) {

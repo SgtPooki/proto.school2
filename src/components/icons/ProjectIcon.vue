@@ -1,6 +1,3 @@
-<!-- <script setup>
-
-</script> -->
 <template>
   <DWebIcon v-if="id === 'dweb'"/>
   <FilecoinIcon v-else-if="id === 'filecoin'"/>
@@ -19,16 +16,6 @@ import Libp2pIcon from '@/static/images/projects/libp2p.svg'
 import MultiformatsIcon from '@/static/images/projects/multiformats.svg'
 
 export default {
-  setup () {
-    return {
-      DWebIcon,
-      FilecoinIcon,
-      IPFSIcon,
-      IPLDIcon,
-      Libp2pIcon,
-      MultiformatsIcon
-    }
-  },
   name: 'ProjectIcon',
   components: {
     DWebIcon,

@@ -24,6 +24,7 @@ function getNextLessonId (tutorial) {
 }
 
 export async function getLesson (tutorial, lessonId) {
+  console.log('getLesson')
   const formattedId = getFormattedId(lessonId)
   const lessonFilePrefix = `${tutorial.folderName}/${formattedId}`
   console.log(`lessonFilePrefix: `, lessonFilePrefix);
@@ -40,6 +41,7 @@ export async function getLesson (tutorial, lessonId) {
     try {
 
     lessonMd = await import(/* @vite-ignore */ mdPath)
+    console.log(`lessonMd: `, lessonMd);
     // console.log(`testLessonMd: `, testLessonMd);
     } catch (err) {
       // throw ENOENT error if file not found
@@ -52,7 +54,8 @@ export async function getLesson (tutorial, lessonId) {
       throw new Error('test')
     }
     // lessonMd = readFileSync(files.getMarkdownPath(tutorial, lessonId), 'utf8')
-    lessonMd = `placeHolder for lessonMd for ${tutorial.id} ${lessonId} ${formattedId}}`
+    // lessonMd = `placeHolder for lessonMd for ${tutorial.id} ${lessonId} ${formattedId}}`
+    lessonMd =
     console.log(`lessonMd: `, lessonMd);
     lesson = {
       id: lessonId,

@@ -305,6 +305,7 @@ export default {
       return getTutorialType(this.tutorial.formattedId)
     },
     trackingData: function () {
+      console.log('trackingData', this.tutorial, this.lesson, this.tutorialType, this.tutorial.project.name)
       return {
         tutorial: this.tutorial.shortTitle,
         lessonNumber: this.isResources ? 'resources' : this.lessonId,

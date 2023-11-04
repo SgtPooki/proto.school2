@@ -32,6 +32,7 @@ export default {
   },
   computed: {
     type: function () {
+      console.log(this.tutorialId, this.lessonId)
       const isLesson = !!this.lessonId
       const type = this.lessonId
         ? getLessonType(this.tutorialId, this.lessonId)

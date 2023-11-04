@@ -18,6 +18,8 @@ import stateInit from './state/init'
 import { ViteSSG } from 'vite-ssg/single-page'
 import routes from './routes'
 
+// import * as ssgOnly from './ssg-only/index.js'
+
 
 async function loadTutorials() {
   const fs = await import('fs/promises')
@@ -63,14 +65,17 @@ console.log(`router.getRoutes(): `, router.getRoutes());
 export const createApp = ViteSSG(
   App,
   // { routes: routes.all() },
-  async ({app, initialState, routes}) => {
-    console.log(`routes: `, routes);
+  async ({app, initialState}) => {
+    // console.log(`routes: `, routes);
 
     if (import.meta.env.SSR) {
       // Set initial state during server side
       // initialState = {...stateInit()}
       initialState.data = await stateInit()
       // await loadTutorials()
+      // const tutorialRedirects = await ssgOnly.redirects()
+      // console.log(`tutorialRedirects: `, tutorialRedirects);
+      // await router.addRoutes(tutorialRedirects)
       await router.addRoutes(await routes.redirects())
 
     } else {

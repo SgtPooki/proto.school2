@@ -12,53 +12,57 @@
         name="state-view-transition"
         mode="out-in"
       >
-        <h2
-          key="initial-title"
-          class="state-view mt0 mb0"
-          v-if="currentStep < maximumStep"
-          :data-state-view-active="currentStep < maximumStep"
-          data-state-view-transition-function="slide"
-          data-state-view-transition-delay-leave="default"
-        >
-          {{translations.form.title}}
-        </h2>
-        <h2
-          key="thank-you"
-          class="state-view mt0 mb0"
-          v-if="currentStep === maximumStep"
-          :data-state-view-active="currentStep === maximumStep"
-          data-state-view-transition-function="slide"
-        >
-          {{translations.thankYouMessage.title}}
-        </h2>
+        <div>
+          <h2
+            key="initial-title"
+            class="state-view mt0 mb0"
+            v-if="currentStep < maximumStep"
+            :data-state-view-active="currentStep < maximumStep"
+            data-state-view-transition-function="slide"
+            data-state-view-transition-delay-leave="default"
+          >
+            {{translations.form.title}}
+          </h2>
+          <h2
+            key="thank-you"
+            class="state-view mt0 mb0"
+            v-if="currentStep === maximumStep"
+            :data-state-view-active="currentStep === maximumStep"
+            data-state-view-transition-function="slide"
+          >
+            {{translations.thankYouMessage.title}}
+          </h2>
+        </div>
       </transition>
       <transition
         name="state-view-transition"
         mode="out-in"
       >
-        <div
-          class="questions state-view mt3"
-          v-if="currentStep < maximumStep"
-          :data-state-view-active="currentStep < maximumStep"
-          data-state-view-transition-function="slide"
-          data-state-view-transition-delay-leave="default"
-        >
-          <Question
-            class="question mt3"
-            v-for="(question, index) in currentQuestions"
-            :key="question.text"
-            :question="question"
-            :onSelect="answerNumber => onSelect(question, answerNumber)"
-            :answerSelected="answers[index]"
+        <div>
+          <div
+            class="questions state-view mt3"
+            v-if="currentStep < maximumStep"
+            :data-state-view-active="currentStep < maximumStep"
+            data-state-view-transition-function="slide"
+            data-state-view-transition-delay-leave="default"
+          >
+            <Question
+              class="question mt3"
+              v-for="(question, index) in currentQuestions"
+              :key="question.text"
+              :question="question"
+              :onSelect="answerNumber => onSelect(question, answerNumber)"
+              :answerSelected="answers[index]"
+            />
+          </div>
+          <ThankYouMessage
+            class="state-view mt3"
+            v-if="currentStep === maximumStep"
+            :data-state-view-active="currentStep === maximumStep"
+            key="thank-you"
+            :showProfileSurveyLink="!isProfileSurveyComplete()"
           />
         </div>
-        <ThankYouMessage
-          class="state-view mt3"
-          v-if="currentStep === maximumStep"
-          :data-state-view-active="currentStep === maximumStep"
-          key="thank-you"
-          :showProfileSurveyLink="!isProfileSurveyComplete()"
-        />
       </transition>
       <ButtonClose
         title="Dismiss survey"

@@ -12,25 +12,27 @@
         name="state-view-transition"
         mode="out-in"
       >
-        <h2
-          key="initial-title"
-          class="state-view mt0 mb0"
-          v-if="currentStep < maximumStep"
-          :data-state-view-active="currentStep < maximumStep"
-          data-state-view-transition-function="slide"
-          data-state-view-transition-delay-leave="slow"
-        >
-          {{translations.form.title}}
-        </h2>
-        <h2
-          key="thank-you"
-          class="state-view mt0 mb0"
-          v-if="currentStep === maximumStep"
-          :data-state-view-active="currentStep === maximumStep"
-          data-state-view-transition-function="slide"
-        >
-          {{translations.thankYouMessage.title}}
-        </h2>
+        <div>
+          <h2
+            key="initial-title"
+            class="state-view mt0 mb0"
+            v-if="currentStep < maximumStep"
+            :data-state-view-active="currentStep < maximumStep"
+            data-state-view-transition-function="slide"
+            data-state-view-transition-delay-leave="slow"
+          >
+            {{translations.form.title}}
+          </h2>
+          <h2
+            key="thank-you"
+            class="state-view mt0 mb0"
+            v-if="currentStep === maximumStep"
+            :data-state-view-active="currentStep === maximumStep"
+            data-state-view-transition-function="slide"
+          >
+            {{translations.thankYouMessage.title}}
+          </h2>
+        </div>
       </transition>
       <StepsTracker
         class="steps-tracker mb3 mt2"
@@ -41,23 +43,25 @@
         name="state-view-transition"
         mode="out-in"
       >
-        <Question
-          v-if="question"
-          class="state-view"
-          data-state-view-active="true"
-          data-state-view-transition-function="slide"
-          :data-state-view-transition-delay-leave="currentStep === (maximumStep - 1) ? 'slow' : 'default'"
-          :key="question.text"
-          :question="question"
-          :onSelect="onSelect"
-        />
-        <ThankYouMessage
-          class="state-view"
-          v-if="currentStep === maximumStep"
-          :data-state-view-active="currentStep === maximumStep"
-          key="thank-you"
-          :showProfileSurveyLink="!isProfileSurveyComplete()"
-        />
+        <div>
+          <Question
+            v-if="question"
+            class="state-view"
+            data-state-view-active="true"
+            data-state-view-transition-function="slide"
+            :data-state-view-transition-delay-leave="currentStep === (maximumStep - 1) ? 'slow' : 'default'"
+            :key="question.text"
+            :question="question"
+            :onSelect="onSelect"
+          />
+          <ThankYouMessage
+            class="state-view"
+            v-if="currentStep === maximumStep"
+            :data-state-view-active="currentStep === maximumStep"
+            key="thank-you"
+            :showProfileSurveyLink="!isProfileSurveyComplete()"
+          />
+        </div>
       </transition>
       <ButtonClose
         title="Dismiss survey"
