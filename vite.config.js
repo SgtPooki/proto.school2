@@ -31,8 +31,12 @@ export default defineConfig({
       ]
     }
   },
+  define: {
+    // 'window': 'globalThis',
+  },
   resolve: {
     alias: {
+      'vue-select/es': 'node_modules/vue-select/dist/vue-select.es.js',
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
 

@@ -75,9 +75,15 @@ import dynamicPages from './data/dynamic-pages'
 
 function head (customData) {
   const meta = []
+  let windowDependentData = {}
+  if (!import.meta.env.SSR && typeof window !== 'undefined') {
+    windowDependentData = {
+      ...staticPages[window.location.pathname],
+      ...staticPages[window.location.pathname + window.location.search],
+    }
+  }
   const data = {
-    ...staticPages[window.location.pathname],
-    ...staticPages[window.location.pathname + window.location.search],
+    ...windowDependentData,
     ...customData
   }
 

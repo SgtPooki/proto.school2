@@ -1,6 +1,10 @@
 import tutorials from './tutorials'
 
 function migrateCacheEntry (tutorialId, pastUrl) {
+
+  if (import.meta.env.SSR) {
+    return
+  }
   const tutorial = tutorials[tutorialId]
   const newUrl = tutorial.url
   // Go through the lesson in the tutorial

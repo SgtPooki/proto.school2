@@ -1,5 +1,5 @@
 // import VueRouter from 'vue-router'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 
 import { migrateCache } from './utils/paths.js'
 import routes from './routes.js'
@@ -45,7 +45,7 @@ export const router = new createRouter({
     //   redirect: '404'
     // }
   ],
-  history: createWebHistory(),
+  history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
   scrollBehavior (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }
   }
@@ -81,7 +81,9 @@ router.onError(error => {
   if (error.name === 'ChunkLoadError') {
     console.warn('Failed to load chunk due to new version of the website published - will reload page')
 
-    window.location.pathname = nextRoute ? nextRoute.path : window.location.pathname
+    if (!import.meta.env.SSR) {
+      window.location.pathname = nextRoute ? nextRoute.path : window.location.pathname
+    }
   }
 })
 

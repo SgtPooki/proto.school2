@@ -104,7 +104,7 @@ export default {
         log: 'lesson has been passed'
       },
       {
-        show: !this.$root.$data.state.modals.tutorialRedirect.shown,
+        show: !this.$root.$data.state?.modals.tutorialRedirect.shown,
         log: 'modal has been shown already'
       }
     ]

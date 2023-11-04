@@ -8,7 +8,7 @@
 // import { resolve } from 'path'
 
 import errorCode from 'err-code'
-import { findKey } from 'lodash'
+import { findKey } from 'lodash-es'
 // import { deleteSync as sync } from 'del'
 
 import { createLogGroup, debug as _debug } from '../logger'

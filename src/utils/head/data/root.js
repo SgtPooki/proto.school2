@@ -1,13 +1,17 @@
 export default function headRoot () {
   // Return to vue-meta
+  let pathName = ''
+  if (!import.meta.env.SSR && typeof window !== 'undefined') {
+    pathName = window.location.pathname
+  }
   return {
     title: 'ProtoSchool',
     titleTemplate: title => title && !title.includes('ProtoSchool') ? `${title} | ProtoSchool` : title,
     link: [
-      { rel: 'canonical', href: 'https://proto.school' + window.location.pathname }
+      { rel: 'canonical', href: 'https://proto.school' + pathName }
     ],
     meta: [
-      { property: 'og:url', content: 'https://proto.school' + window.location.pathname },
+      { property: 'og:url', content: 'https://proto.school' + pathName },
       { property: 'og:type', content: 'website' },
       { property: 'og:image', content: 'https://proto.school/social-tiles/twitter/brand.jpg' },
       { property: 'og:site_name', content: 'ProtoSchool' },

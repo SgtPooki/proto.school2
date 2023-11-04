@@ -1,6 +1,6 @@
 <template>
     <Lesson
-        v-if="!!lesson && (!lesson.meta.type || lesson.meta.type === 'text' || lesson.meta.type === 'code')"
+        v-if="!!lesson && (!lesson.meta?.type || lesson.meta?.type === 'text' || lesson.meta?.type === 'code')"
         :text="!!lesson && lesson.html"
         :concepts="concepts"
         :challenge="challenge"
@@ -11,7 +11,7 @@
         :createTestFile="logic.options.createTestFile"
         :createTestTree="logic.options.createTestTree"
         :lessonId="parseInt(lessonId, 10)"
-        :lessonTitle="!!lesson && lesson.meta.title"
+        :lessonTitle="!!lesson && lesson.meta?.title"
     />
     <FileLesson
         v-else-if="!!lesson && lesson.meta.type === 'file-upload'"
@@ -49,6 +49,7 @@ import marked from '../utils/marked'
 import Lesson from '../components/Lesson.vue'
 import FileLesson from '../components/FileLesson.vue'
 import MultipleChoiceLesson from '../components/MultipleChoiceLesson.vue'
+import dynamicMdImport from '../utils/dynamicMdImport'
 
 export default {
   components: {
@@ -61,7 +62,7 @@ export default {
     lessonId: String
   },
   methods: {
-    loadFile: function (file, { failOnNotFound = true } = {}) {
+    loadFile: async function (file, { failOnNotFound = true } = {}) {
       let filename
       let fileData
 
@@ -85,7 +86,16 @@ export default {
       }
 
       try {
-        fileData = require(`../tutorials/${this.tutorial.formattedId}-${this.tutorial.url}/${filename}`)
+        const fileDataPath = `../tutorials/${this.tutorial.formattedId}-${this.tutorial.url}/${filename}`
+        console.log('trying to load file data at path', fileDataPath)
+        // fileData = require(fileDataPath)
+        if (/.md$/.test(fileDataPath)) {
+          fileData = await dynamicMdImport(fileDataPath)
+        } else {
+          fileData = await import(fileDataPath)
+          console.log('file data', fileData)
+        }
+        // fileData = await dynamicMdImport(fileDataPath)
       } catch (error) {
         const errorMessage = `File "${filename}" not found`
 
@@ -124,27 +134,37 @@ export default {
 
       return tutorial
     },
-    lesson: function () {
-      return this.tutorial && marked(this.loadFile('md'))
+    lesson: async function () {
+      // console.log('lesson computed', this)
+      const lesson = this.tutorial && marked(await this.loadFile('md'))
+      console.log('lesson computed lesson:', lesson)
+      return lesson
     },
     lessonNeedsJsFile: function () {
-      return this.lesson && !!this.lesson.meta.type && this.lesson.meta.type !== 'text'
+      return this.lesson && !!this.lesson.meta?.type && this.lesson.meta?.type !== 'text'
     },
     lessonNeedsChallengeFile: function () {
-      return this.lesson && !!this.lesson.meta.type && (
-        this.lesson.meta.type === 'code' ||
-        this.lesson.meta.type === 'file-upload'
+      return this.lesson && !!this.lesson.meta?.type && (
+        this.lesson.meta?.type === 'code' ||
+        this.lesson.meta?.type === 'file-upload'
       )
     },
-    concepts: function () {
-      const concepts = this.loadFile('concepts', { failOnNotFound: false })
+    concepts: async function () {
+      const concepts = await this.loadFile('concepts', { failOnNotFound: false })
+      console.log('concepts', concepts)
 
       return concepts ? marked(concepts).html : ''
     },
-    challenge: function () {
-      const challenge = this.lessonNeedsChallengeFile && this.loadFile('challenge')
+    challenge: async function () {
+      const challenge = this.lessonNeedsChallengeFile && await this.loadFile('challenge')
 
       return challenge ? marked(challenge).html : ''
+    },
+    created: function () {
+      console.log('created Lesson.vue', this)
+      // if (this.tutorial && this.lesson) {
+      //   countly.trackLessonView(this.tutorial, this.lesson)
+      // }
     },
     logic: function () {
       let logic = {

@@ -6,8 +6,10 @@ import 'ipfs-css'
 import VueMeta from 'vue-meta'
 import VueTooltip from 'v-tooltip'
 import PortalVue from 'portal-vue'
-import hljsVuePlugin from "@highlightjs/vue-plugin";
-import VueSelect from 'vue-select'
+// import * as hljsVuePluginMod from "@highlightjs/vue-plugin";
+import VueSelect from 'vue-select/es'
+// const hljsVuePlugin = hljsVuePluginMod.default;
+// console.log(`hljsVuePlugin: `, hljsVuePlugin);
 
 import 'vue-select/dist/vue-select.css'
 import 'highlight.js/styles/github.css'
@@ -60,12 +62,14 @@ async function loadTutorials() {
 // // })
 
 // app.mount('#app')
-console.log(`router: `, router);
-console.log(`router.getRoutes(): `, router.getRoutes());
+// console.log(`router: `, router);
+// console.log(`router.getRoutes(): `, router.getRoutes());
 export const createApp = ViteSSG(
   App,
   // { routes: routes.all() },
   async ({app, initialState}) => {
+    // const routerMod = await import('./router.js')
+    // const router = routerMod.router
     // console.log(`routes: `, routes);
 
     if (import.meta.env.SSR) {
@@ -76,19 +80,20 @@ export const createApp = ViteSSG(
       // const tutorialRedirects = await ssgOnly.redirects()
       // console.log(`tutorialRedirects: `, tutorialRedirects);
       // await router.addRoutes(tutorialRedirects)
-      await router.addRoutes(await routes.redirects())
+      await router.addRoutes?.(await routes.redirects())
 
     } else {
 
       // initialState = {...stateInit()}
       // Restore or read the initial state on the client side in the browser
       console.log(initialState.data) // => { cats: 2, dogs: 3 }
+      console.log(`initialState: `, initialState);
     }
-    console.log(`initialState: `, initialState);
+
     app
       .use(router)
       // .use(VueMeta, { keyName: 'head', refreshOnceOnNavigation: true })
-      .use(hljsVuePlugin)
+      // .use(hljsVuePlugin)
       .use(VueTooltip)
       .use(PortalVue)
 

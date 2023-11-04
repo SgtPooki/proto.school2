@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite-ssg build",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
@@ -21,6 +21,7 @@
     "ipfs-css": "^1.4.0",
     "it-all": "^3.0.3",
     "it-to-buffer": "^4.0.3",
+    "lodash-es": "^4.17.21",
     "meta-marked": "^0.5.0",
     "moment": "^2.29.4",
     "monaco-editor-vue": "^1.0.10",

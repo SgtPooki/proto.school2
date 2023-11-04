@@ -24,11 +24,15 @@ function decodeValue (value) {
 }
 
 export function set (prefix, key, value) {
-  localStorage.setItem(settingsKey(prefix, key), value)
+  if (!import.meta.env.SSR) {
+    localStorage.setItem(settingsKey(prefix, key), value)
+  }
 }
 
 export function get (prefix, key) {
-  return localStorage.getItem(settingsKey(prefix, key))
+  if (!import.meta.env.SSR) {
+    return localStorage.getItem(settingsKey(prefix, key))
+  }
 }
 
 export function makeOperations (prefix) {

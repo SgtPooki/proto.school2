@@ -298,7 +298,8 @@ export default {
     },
     nextLessonIsResources: function () {
       const basePath = this.routePath.slice(0, -2)
-      const hasResources = this.$router.resolve(basePath + 'resources').route.name !== '404'
+      const thing = this.$router.resolve(basePath + 'resources')
+      const hasResources = thing.route?.name && thing.route?.name !== '404'
       return this.lessonId === this.lessonsInTutorial && hasResources
     },
     tutorialType: function () {
